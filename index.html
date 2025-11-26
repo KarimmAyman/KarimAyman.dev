@@ -60,14 +60,14 @@
     </script>
 
     <style>
-      /* Smooth font rendering for mobile */
+      /* Smooth font rendering */
       * {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         -webkit-tap-highlight-color: transparent;
       }
 
-      /* Custom scrollbar - thinner for mobile */
+      /* Custom scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -82,7 +82,7 @@
         background: #52525b;
       }
 
-      /* Enhanced glow effects */
+      /* Glow effects */
       .glow {
         box-shadow: 0 0 15px rgba(34, 211, 238, 0.25),
           0 0 30px rgba(34, 211, 238, 0.15);
@@ -105,7 +105,7 @@
         }
       }
 
-      /* Mobile menu animation - smoother */
+      /* Mobile menu animation */
       .mobile-menu {
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
           opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,7 +135,7 @@
         pointer-events: none;
       }
 
-      /* Enhanced hamburger animation */
+      /* Hamburger animation */
       .hamburger span {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         transform-origin: center;
@@ -174,7 +174,7 @@
         transform: translateY(0) !important;
       }
 
-      /* Optimized animations for mobile */
+      /* Reduced motion support */
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -185,7 +185,7 @@
         }
       }
 
-      /* Enhanced button press effect for mobile */
+      /* Button press effect */
       .btn-press {
         transition: transform 0.1s ease, box-shadow 0.1s ease;
       }
@@ -194,7 +194,7 @@
         transform: scale(0.97);
       }
 
-      /* Card hover effect - optimized for mobile */
+      /* Card hover effect */
       .card-hover {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
@@ -248,50 +248,11 @@
         animation: pulse-glow 2s ease-in-out infinite;
       }
 
-      /* Mobile-optimized spacing */
-      @media (max-width: 640px) {
-        .container-mobile {
-          padding-left: 1rem;
-          padding-right: 1rem;
-        }
-      }
-
       /* Safe area for notched devices */
       @supports (padding: max(0px)) {
         body {
           padding-left: max(0px, env(safe-area-inset-left));
           padding-right: max(0px, env(safe-area-inset-right));
-        }
-      }
-
-      /* Skeleton loading for images */
-      .skeleton {
-        background: linear-gradient(
-          90deg,
-          #f0f0f0 25%,
-          #e0e0e0 50%,
-          #f0f0f0 75%
-        );
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-      }
-
-      .dark .skeleton {
-        background: linear-gradient(
-          90deg,
-          #27272a 25%,
-          #3f3f46 50%,
-          #27272a 75%
-        );
-        background-size: 200% 100%;
-      }
-
-      @keyframes loading {
-        0% {
-          background-position: 200% 0;
-        }
-        100% {
-          background-position: -200% 0;
         }
       }
     </style>
@@ -532,9 +493,19 @@
 
                 <!-- Main Image -->
                 <img
-                  src="MyPecs.jpg"
+                  srcset="
+                    MyPecs-400.webp   400w,
+                    MyPecs-800.webp   800w,
+                    MyPecs-1200.webp 1200w
+                  "
+                  sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, 400px"
+                  src="MyPecs-800.webp"
                   alt="Karim Ayman - Full Stack Developer"
                   loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width="800"
+                  height="800"
                   class="relative rounded-2xl shadow-2xl dark:shadow-brand-500/20 border-4 border-white dark:border-dark-100 object-cover w-full h-full"
                 />
               </div>
@@ -643,9 +614,19 @@
 
               <!-- Main Image -->
               <img
-                src="MyPecs.jpg"
+                srcset="
+                  MyPecs-400.webp   400w,
+                  MyPecs-800.webp   800w,
+                  MyPecs-1200.webp 1200w
+                "
+                sizes="(max-width: 1024px) 0px, (max-width: 1280px) 448px, 560px"
+                src="MyPecs-800.webp"
                 alt="Karim Ayman - Full Stack Developer"
                 loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                width="800"
+                height="800"
                 class="relative rounded-3xl shadow-2xl dark:shadow-brand-500/20 border-4 border-white dark:border-dark-100 object-cover w-full h-full transform rotate-3 hover:rotate-0 transition-transform duration-500"
               />
             </div>
@@ -976,11 +957,20 @@
                 class="relative w-full h-56 sm:h-64 md:h-80 lg:h-full overflow-hidden bg-gray-100 dark:bg-dark-200"
               >
                 <img
-                  src="Aoun.png"
-                  alt="Aoun Platform"
-                  class="absolute inset-0 w-full h-full object-contain p-4 pb-20 :scale-105 transition-transform duration-500"
+                  srcset="
+                    Aoun-400.webp   400w,
+                    Aoun-800.webp   800w,
+                    Aoun-1200.webp 1200w
+                  "
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
+                  src="Aoun-800.webp"
+                  alt="Aoun Platform - Student Services Application"
+                  loading="lazy"
+                  decoding="async"
+                  width="800"
+                  height="600"
+                  class="absolute inset-0 w-full h-full object-contain p-4 pb-20 group-hover:scale-105 transition-transform duration-500"
                 />
-
                 <!-- Enhanced gradient overlay - darker for better text visibility -->
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-gray-900/20 pointer-events-none"
@@ -1201,7 +1191,17 @@
               class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20"
             >
               <img
-                src="web 2.jpg"
+                srcset="
+                  web2-400.webp   400w,
+                  web2-800.webp   800w,
+                  web2-1200.webp 1200w
+                "
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                src="web2-800.webp"
+                loading="lazy"
+                decoding="async"
+                width="800"
+                height="600"
                 alt="Maona Trading Company"
                 class="absolute inset-0 w-full h-full object-contain p-8 sm:p-10 md:p-4 group-hover:scale-110 transition-transform duration-500"
               />
@@ -1301,7 +1301,17 @@
               class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20"
             >
               <img
-                src="AudioPhile.png"
+                srcset="
+                  AudioPhile-400.webp   400w,
+                  AudioPhile-800.webp   800w,
+                  AudioPhile-1200.webp 1200w
+                "
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                src="AudioPhile-800.webp"
+                loading="lazy"
+                decoding="async"
+                width="800"
+                height="600"
                 alt="Audiophile E-Commerce"
                 class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
               />
@@ -1394,7 +1404,17 @@
               class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20"
             >
               <img
-                src="onlineQuiz.png"
+                srcset="
+                  onlineQuiz-400.webp   400w,
+                  onlineQuiz-800.webp   800w,
+                  onlineQuiz-1200.webp 1200w
+                "
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                src="onlineQuiz-800.webp"
+                loading="lazy"
+                decoding="async"
+                width="800"
+                height="600"
                 alt="Quiz Platform"
                 class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
               />
@@ -2718,7 +2738,6 @@
       // UTILITY FUNCTIONS
       // ==============================================
 
-      // Debounce function for performance optimization
       function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -2731,7 +2750,6 @@
         };
       }
 
-      // Throttle function for scroll events
       function throttle(func, limit) {
         let inThrottle;
         return function (...args) {
@@ -2758,7 +2776,6 @@
           duration: 400,
           offset: 30,
         },
-        // Disable on specific elements if needed
         disable: false,
       });
 
@@ -2783,7 +2800,6 @@
           this.updateThemeIcons();
           this.updateMetaThemeColor();
 
-          // Add smooth transition effect
           document.documentElement.style.transition =
             "background-color 0.3s ease";
           setTimeout(() => {
@@ -2794,14 +2810,12 @@
         updateThemeIcons() {
           const isDark = document.documentElement.classList.contains("dark");
 
-          // Update desktop icons
           this.updateIconSet(
             "theme-toggle-dark-icon",
             "theme-toggle-light-icon",
             isDark
           );
 
-          // Update mobile icons
           this.updateIconSet(
             "theme-toggle-dark-icon-mobile",
             "theme-toggle-light-icon-mobile",
@@ -2838,7 +2852,6 @@
         }
 
         applySystemPreference() {
-          // Check for system preference if no saved preference exists
           if (!localStorage.getItem("theme")) {
             const prefersDark = window.matchMedia(
               "(prefers-color-scheme: dark)"
@@ -2851,19 +2864,16 @@
         }
 
         setupEventListeners() {
-          // Desktop theme toggle
           const desktopToggle = document.getElementById("theme-toggle");
           if (desktopToggle) {
             desktopToggle.addEventListener("click", () => this.toggle());
           }
 
-          // Mobile theme toggle
           const mobileToggle = document.getElementById("theme-toggle-mobile");
           if (mobileToggle) {
             mobileToggle.addEventListener("click", () => this.toggle());
           }
 
-          // Listen for system theme changes
           window
             .matchMedia("(prefers-color-scheme: dark)")
             .addEventListener("change", (e) => {
@@ -2901,7 +2911,6 @@
           ) {
             return;
           }
-
           this.setupEventListeners();
         }
 
@@ -2911,9 +2920,6 @@
           this.hamburger.classList.add("active");
           this.menuBackdrop.classList.remove("hidden");
           document.body.style.overflow = "hidden";
-
-          // Trap focus within menu
-          this.trapFocus();
         }
 
         close() {
@@ -2929,52 +2935,20 @@
           isOpen ? this.close() : this.open();
         }
 
-        trapFocus() {
-          const focusableElements = this.mobileMenu.querySelectorAll(
-            "a[href], button, textarea, input, select"
-          );
-          const firstFocusable = focusableElements[0];
-          const lastFocusable = focusableElements[focusableElements.length - 1];
-
-          if (firstFocusable) {
-            firstFocusable.focus();
-          }
-
-          this.mobileMenu.addEventListener("keydown", (e) => {
-            if (e.key === "Tab") {
-              if (e.shiftKey) {
-                if (document.activeElement === firstFocusable) {
-                  e.preventDefault();
-                  lastFocusable.focus();
-                }
-              } else {
-                if (document.activeElement === lastFocusable) {
-                  e.preventDefault();
-                  firstFocusable.focus();
-                }
-              }
-            }
-          });
-        }
-
         setupEventListeners() {
-          // Toggle button
           this.mobileMenuButton.addEventListener("click", (e) => {
             e.stopPropagation();
             this.toggle();
           });
 
-          // Backdrop click
           this.menuBackdrop.addEventListener("click", () => this.close());
 
-          // Menu links
           const mobileMenuLinks =
             document.querySelectorAll(".mobile-menu-link");
           mobileMenuLinks.forEach((link) => {
             link.addEventListener("click", () => this.close());
           });
 
-          // Escape key
           document.addEventListener("keydown", (e) => {
             if (
               e.key === "Escape" &&
@@ -2984,7 +2958,6 @@
             }
           });
 
-          // Close menu on resize to desktop
           window.addEventListener(
             "resize",
             debounce(() => {
@@ -3010,23 +2983,19 @@
 
         init() {
           if (!this.navbar) return;
-
           this.setupScrollEffect();
-          this.highlightActiveSection();
         }
 
         setupScrollEffect() {
           const handleScroll = throttle(() => {
             const currentScroll = window.pageYOffset;
 
-            // Add shadow when scrolled
             if (currentScroll > 10) {
               this.navbar.classList.add("scrolled");
             } else {
               this.navbar.classList.remove("scrolled");
             }
 
-            // Hide/show navbar on scroll
             if (currentScroll <= this.scrollThreshold) {
               this.navbar.classList.remove("scroll-up", "scroll-down");
               return;
@@ -3056,35 +3025,6 @@
 
           window.addEventListener("scroll", handleScroll, { passive: true });
         }
-
-        highlightActiveSection() {
-          const sections = document.querySelectorAll("section[id]");
-          const navLinks = document.querySelectorAll("nav a[href^='#']");
-
-          const highlightNav = throttle(() => {
-            const scrollPosition = window.pageYOffset + 150;
-
-            sections.forEach((section) => {
-              const sectionTop = section.offsetTop;
-              const sectionHeight = section.offsetHeight;
-              const sectionId = section.getAttribute("id");
-
-              if (
-                scrollPosition >= sectionTop &&
-                scrollPosition < sectionTop + sectionHeight
-              ) {
-                navLinks.forEach((link) => {
-                  link.classList.remove("active-link");
-                  if (link.getAttribute("href") === `#${sectionId}`) {
-                    link.classList.add("active-link");
-                  }
-                });
-              }
-            });
-          }, 100);
-
-          window.addEventListener("scroll", highlightNav, { passive: true });
-        }
       }
 
       // ==============================================
@@ -3101,7 +3041,6 @@
             anchor.addEventListener("click", (e) => {
               const targetId = anchor.getAttribute("href");
 
-              // Skip if it's just "#"
               if (targetId === "#" || targetId === "#!") {
                 e.preventDefault();
                 return;
@@ -3143,7 +3082,6 @@
 
         init() {
           if (!this.button) return;
-
           this.setupScrollListener();
           this.setupClickListener();
         }
@@ -3181,7 +3119,7 @@
       }
 
       // ==============================================
-      // SCROLL PROGRESS BAR (Optional Enhancement)
+      // SCROLL PROGRESS BAR
       // ==============================================
 
       class ScrollProgressBar {
@@ -3216,164 +3154,6 @@
       }
 
       // ==============================================
-      // TYPING EFFECT (Optional Enhancement for Hero Section)
-      // ==============================================
-
-      class TypingEffect {
-        constructor(
-          element,
-          words,
-          typingSpeed = 100,
-          deletingSpeed = 50,
-          delay = 2000
-        ) {
-          this.element = element;
-          this.words = words;
-          this.typingSpeed = typingSpeed;
-          this.deletingSpeed = deletingSpeed;
-          this.delay = delay;
-          this.wordIndex = 0;
-          this.charIndex = 0;
-          this.isDeleting = false;
-
-          if (this.element) {
-            this.type();
-          }
-        }
-
-        type() {
-          const currentWord = this.words[this.wordIndex];
-
-          if (this.isDeleting) {
-            this.element.textContent = currentWord.substring(
-              0,
-              this.charIndex - 1
-            );
-            this.charIndex--;
-          } else {
-            this.element.textContent = currentWord.substring(
-              0,
-              this.charIndex + 1
-            );
-            this.charIndex++;
-          }
-
-          let typeSpeed = this.isDeleting
-            ? this.deletingSpeed
-            : this.typingSpeed;
-
-          if (!this.isDeleting && this.charIndex === currentWord.length) {
-            typeSpeed = this.delay;
-            this.isDeleting = true;
-          } else if (this.isDeleting && this.charIndex === 0) {
-            this.isDeleting = false;
-            this.wordIndex = (this.wordIndex + 1) % this.words.length;
-          }
-
-          setTimeout(() => this.type(), typeSpeed);
-        }
-      }
-
-      // ==============================================
-      // LAZY LOADING IMAGES (Optional Enhancement)
-      // ==============================================
-
-      class LazyLoadManager {
-        constructor() {
-          this.images = document.querySelectorAll("img[data-src]");
-          this.init();
-        }
-
-        init() {
-          if ("IntersectionObserver" in window) {
-            const imageObserver = new IntersectionObserver(
-              (entries, observer) => {
-                entries.forEach((entry) => {
-                  if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove("lazy");
-                    imageObserver.unobserve(img);
-                  }
-                });
-              }
-            );
-
-            this.images.forEach((img) => imageObserver.observe(img));
-          } else {
-            // Fallback for browsers that don't support IntersectionObserver
-            this.images.forEach((img) => {
-              img.src = img.dataset.src;
-            });
-          }
-        }
-      }
-
-      // ==============================================
-      // FORM VALIDATION (Optional Enhancement)
-      // ==============================================
-
-      class FormValidator {
-        constructor(formId) {
-          this.form = document.getElementById(formId);
-          if (this.form) {
-            this.init();
-          }
-        }
-
-        init() {
-          this.form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            if (this.validate()) {
-              this.submit();
-            }
-          });
-        }
-
-        validate() {
-          let isValid = true;
-          const inputs = this.form.querySelectorAll(
-            "input[required], textarea[required]"
-          );
-
-          inputs.forEach((input) => {
-            if (!input.value.trim()) {
-              this.showError(input, "This field is required");
-              isValid = false;
-            } else {
-              this.removeError(input);
-            }
-          });
-
-          return isValid;
-        }
-
-        showError(input, message) {
-          input.classList.add("border-red-500");
-          let error = input.nextElementSibling;
-          if (!error || !error.classList.contains("error-message")) {
-            error = document.createElement("span");
-            error.className = "error-message text-red-500 text-sm mt-1";
-            input.parentNode.insertBefore(error, input.nextSibling);
-          }
-          error.textContent = message;
-        }
-
-        removeError(input) {
-          input.classList.remove("border-red-500");
-          const error = input.nextElementSibling;
-          if (error && error.classList.contains("error-message")) {
-            error.remove();
-          }
-        }
-
-        submit() {
-          // Handle form submission
-          console.log("Form submitted successfully");
-        }
-      }
-
-      // ==============================================
       // PERFORMANCE OPTIMIZATION
       // ==============================================
 
@@ -3383,26 +3163,8 @@
         }
 
         init() {
-          // Preload critical resources
-          this.preloadResources();
-
-          // Reduce motion for users who prefer it
           this.respectReducedMotion();
-
-          // Add loading class removal
           this.handlePageLoad();
-        }
-
-        preloadResources() {
-          // Preload hero image or critical assets
-          const heroImage = document.querySelector(".hero-image");
-          if (heroImage && heroImage.dataset.src) {
-            const link = document.createElement("link");
-            link.rel = "preload";
-            link.as = "image";
-            link.href = heroImage.dataset.src;
-            document.head.appendChild(link);
-          }
         }
 
         respectReducedMotion() {
@@ -3411,7 +3173,6 @@
           ).matches;
           if (prefersReducedMotion) {
             document.documentElement.classList.add("reduce-motion");
-            // Disable AOS animations
             AOS.init({ disable: true });
           }
         }
@@ -3427,391 +3188,6 @@
       }
 
       // ==============================================
-      // INITIALIZE ALL MANAGERS
-      // ==============================================
-
-      document.addEventListener("DOMContentLoaded", function () {
-        try {
-          // Core functionality
-          const themeManager = new ThemeManager();
-          const mobileMenuManager = new MobileMenuManager();
-          const navbarManager = new NavbarManager();
-          const smoothScrollManager = new SmoothScrollManager();
-          const scrollToTopManager = new ScrollToTopManager();
-
-          // Optional enhancements (comment out if not needed)
-          const scrollProgressBar = new ScrollProgressBar();
-          const performanceOptimizer = new PerformanceOptimizer();
-          const lazyLoadManager = new LazyLoadManager();
-
-          // Optional: Typing effect for hero section
-          // const typingElement = document.querySelector('.typing-effect');
-          // if (typingElement) {
-          //   new TypingEffect(typingElement, ['Full-Stack Developer', 'React Specialist', '.NET Developer'], 100, 50, 2000);
-          // }
-
-          // Optional: Form validation
-          // const contactForm = new FormValidator('contact-form');
-
-          console.log("✅ All managers initialized successfully");
-        } catch (error) {
-          console.error("❌ Error initializing managers:", error);
-        }
-      });
-
-      // ==============================================
-      // GLOBAL ERROR HANDLER
-      // ==============================================
-
-      window.addEventListener("error", function (e) {
-        console.error("Global error:", e.error);
-        // You can send this to an error tracking service
-      });
-
-      // ==============================================
-      // ACCESSIBILITY ENHANCEMENTS
-      // ==============================================
-
-      // Skip to main content
-      document.addEventListener("keydown", (e) => {
-        if (
-          e.key === "Tab" &&
-          !e.shiftKey &&
-          document.activeElement === document.body
-        ) {
-          const skipLink = document.querySelector('a[href="#main-content"]');
-          if (skipLink) {
-            skipLink.focus();
-          }
-        }
-      });
-
-      // Announce page changes to screen readers
-      const announceToScreenReader = (message) => {
-        const announcement = document.createElement("div");
-        announcement.setAttribute("role", "status");
-        announcement.setAttribute("aria-live", "polite");
-        announcement.setAttribute("aria-atomic", "true");
-        announcement.className = "sr-only";
-        announcement.textContent = message;
-        document.body.appendChild(announcement);
-
-        setTimeout(() => {
-          document.body.removeChild(announcement);
-        }, 1000);
-      };
-
-      // ==============================================
-      // COOKIE CONSENT (Optional Enhancement)
-      // ==============================================
-
-      class CookieConsent {
-        constructor() {
-          this.cookieName = "site_cookie_consent";
-          this.init();
-        }
-
-        init() {
-          if (!this.hasConsent()) {
-            this.showBanner();
-          }
-        }
-
-        hasConsent() {
-          return localStorage.getItem(this.cookieName) === "accepted";
-        }
-
-        showBanner() {
-          const banner = document.createElement("div");
-          banner.id = "cookie-banner";
-          banner.className =
-            "fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-100 border-t-2 border-brand-500 p-4 sm:p-6 shadow-2xl z-50 transform translate-y-0 transition-transform duration-500";
-          banner.innerHTML = `
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-start gap-3">
-            <i class="fas fa-cookie-bite text-2xl text-brand-500"></i>
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              This website uses cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
-            </p>
-          </div>
-          <div class="flex gap-3 flex-shrink-0">
-            <button id="cookie-accept" class="px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-lg font-semibold hover:from-brand-600 hover:to-purple-700 transition-all text-sm">
-              Accept
-            </button>
-            <button id="cookie-decline" class="px-4 py-2 bg-gray-200 dark:bg-dark-200 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-dark-300 transition-all text-sm">
-              Decline
-            </button>
-          </div>
-        </div>
-      `;
-
-          document.body.appendChild(banner);
-
-          document
-            .getElementById("cookie-accept")
-            .addEventListener("click", () => {
-              this.acceptCookies();
-              this.hideBanner(banner);
-            });
-
-          document
-            .getElementById("cookie-decline")
-            .addEventListener("click", () => {
-              this.hideBanner(banner);
-            });
-        }
-
-        acceptCookies() {
-          localStorage.setItem(this.cookieName, "accepted");
-          announceToScreenReader("Cookie preferences saved");
-        }
-
-        hideBanner(banner) {
-          banner.style.transform = "translateY(100%)";
-          setTimeout(() => {
-            if (banner.parentNode) {
-              banner.parentNode.removeChild(banner);
-            }
-          }, 500);
-        }
-      }
-
-      // ==============================================
-      // CONTACT FORM HANDLER (Enhanced)
-      // ==============================================
-
-      class ContactFormHandler {
-        constructor() {
-          this.emailLink = document.querySelector('a[href^="mailto:"]');
-          this.phoneLink = document.querySelector('a[href^="tel:"]');
-          this.init();
-        }
-
-        init() {
-          if (this.emailLink) {
-            this.emailLink.addEventListener("click", () => {
-              announceToScreenReader("Opening email client");
-              this.trackEvent("Contact", "Email Click");
-            });
-          }
-
-          if (this.phoneLink) {
-            this.phoneLink.addEventListener("click", () => {
-              announceToScreenReader("Initiating phone call");
-              this.trackEvent("Contact", "Phone Click");
-            });
-          }
-
-          // Track social media clicks
-          const socialLinks = document.querySelectorAll('a[target="_blank"]');
-          socialLinks.forEach((link) => {
-            link.addEventListener("click", () => {
-              const platform = this.getSocialPlatform(link.href);
-              if (platform) {
-                this.trackEvent("Social Media", `${platform} Click`);
-              }
-            });
-          });
-        }
-
-        getSocialPlatform(url) {
-          if (url.includes("github.com")) return "GitHub";
-          if (url.includes("linkedin.com")) return "LinkedIn";
-          if (url.includes("instagram.com")) return "Instagram";
-          if (url.includes("facebook.com")) return "Facebook";
-          return null;
-        }
-
-        trackEvent(category, action) {
-          // Google Analytics or other tracking
-          if (typeof gtag !== "undefined") {
-            gtag("event", action, {
-              event_category: category,
-            });
-          }
-          console.log(`📊 Event tracked: ${category} - ${action}`);
-        }
-      }
-
-      // ==============================================
-      // EASTER EGG / FUN FEATURES (Optional)
-      // ==============================================
-
-      class EasterEggs {
-        constructor() {
-          this.konamiCode = [
-            "ArrowUp",
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight",
-            "ArrowLeft",
-            "ArrowRight",
-            "b",
-            "a",
-          ];
-          this.konamiIndex = 0;
-          this.init();
-        }
-
-        init() {
-          document.addEventListener("keydown", (e) => {
-            if (e.key === this.konamiCode[this.konamiIndex]) {
-              this.konamiIndex++;
-              if (this.konamiIndex === this.konamiCode.length) {
-                this.activateKonamiCode();
-                this.konamiIndex = 0;
-              }
-            } else {
-              this.konamiIndex = 0;
-            }
-          });
-
-          // Console message
-          this.consoleMessage();
-        }
-
-        activateKonamiCode() {
-          document.body.style.transition = "transform 0.5s";
-          document.body.style.transform = "rotate(360deg)";
-
-          setTimeout(() => {
-            document.body.style.transform = "";
-          }, 500);
-
-          console.log("🎮 Konami Code activated! You found the easter egg!");
-          announceToScreenReader("Easter egg activated!");
-        }
-
-        consoleMessage() {
-          const styles = [
-            "color: #06b6d4",
-            "font-size: 20px",
-            "font-weight: bold",
-            "text-shadow: 2px 2px 4px rgba(0,0,0,0.2)",
-          ].join(";");
-
-          console.log("%c👋 Hello, fellow developer!", styles);
-          console.log(
-            "%cThanks for checking out the console! 🚀",
-            "color: #8b5cf6; font-size: 14px;"
-          );
-          console.log(
-            "%cLike what you see? Let's connect!",
-            "color: #10b981; font-size: 14px;"
-          );
-          console.log(
-            "%c📧 Kareem.apple1111@gmail.com",
-            "color: #3b82f6; font-size: 12px;"
-          );
-        }
-      }
-
-      // ==============================================
-      // NETWORK STATUS INDICATOR
-      // ==============================================
-
-      class NetworkStatus {
-        constructor() {
-          this.init();
-        }
-
-        init() {
-          window.addEventListener("online", () => {
-            this.showNotification("Back online! 🌐", "success");
-          });
-
-          window.addEventListener("offline", () => {
-            this.showNotification("No internet connection 📵", "error");
-          });
-        }
-
-        showNotification(message, type = "info") {
-          const notification = document.createElement("div");
-          notification.className = `fixed top-20 right-4 sm:right-6 px-4 sm:px-6 py-3 sm:py-4 rounded-xl shadow-2xl z-50 transform translate-x-0 transition-all duration-500 text-sm sm:text-base font-semibold ${
-            type === "success"
-              ? "bg-green-500 text-white"
-              : type === "error"
-              ? "bg-red-500 text-white"
-              : "bg-blue-500 text-white"
-          }`;
-          notification.innerHTML = `
-        <div class="flex items-center gap-3">
-          <i class="fas fa-${
-            type === "success"
-              ? "check-circle"
-              : type === "error"
-              ? "exclamation-circle"
-              : "info-circle"
-          }"></i>
-          <span>${message}</span>
-        </div>
-      `;
-
-          document.body.appendChild(notification);
-
-          setTimeout(() => {
-            notification.style.transform = "translateX(150%)";
-            setTimeout(() => {
-              if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-              }
-            }, 500);
-          }, 3000);
-        }
-      }
-
-      // ==============================================
-      // PRINT STYLES HANDLER
-      // ==============================================
-
-      window.addEventListener("beforeprint", () => {
-        // Expand all collapsed sections before printing
-        document.querySelectorAll("details").forEach((detail) => {
-          detail.setAttribute("open", "");
-        });
-      });
-
-      // ==============================================
-      // COPY TO CLIPBOARD FUNCTIONALITY
-      // ==============================================
-
-      function copyToClipboard(text, element) {
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            // Show success feedback
-            const originalHTML = element.innerHTML;
-            element.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            element.classList.add("bg-green-500");
-
-            setTimeout(() => {
-              element.innerHTML = originalHTML;
-              element.classList.remove("bg-green-500");
-            }, 2000);
-          })
-          .catch((err) => {
-            console.error("Failed to copy:", err);
-          });
-      }
-
-      // Add copy buttons to code blocks if any
-      document.querySelectorAll("pre code").forEach((block) => {
-        const button = document.createElement("button");
-        button.className =
-          "absolute top-2 right-2 px-3 py-1 bg-gray-700 text-white text-xs rounded hover:bg-gray-600 transition-colors";
-        button.innerHTML = '<i class="fas fa-copy"></i> Copy';
-        button.addEventListener("click", () => {
-          copyToClipboard(block.textContent, button);
-        });
-
-        const wrapper = block.parentElement;
-        wrapper.style.position = "relative";
-        wrapper.appendChild(button);
-      });
-
-      // ==============================================
       // VIEWPORT HEIGHT FIX FOR MOBILE
       // ==============================================
 
@@ -3825,125 +3201,57 @@
       window.addEventListener("orientationchange", setVH);
 
       // ==============================================
-      // INITIALIZE OPTIONAL FEATURES
+      // INITIALIZE ALL MANAGERS
       // ==============================================
 
-      // Uncomment the features you want to use
-      setTimeout(() => {
-        // new CookieConsent(); // Uncomment if you want cookie consent
-        new ContactFormHandler();
-        new NetworkStatus();
-        // new EasterEggs(); // Uncomment for fun features
-      }, 1000);
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          new ThemeManager();
+          new MobileMenuManager();
+          new NavbarManager();
+          new SmoothScrollManager();
+          new ScrollToTopManager();
+          new ScrollProgressBar();
+          new PerformanceOptimizer();
+
+          console.log("✅ All managers initialized successfully");
+        } catch (error) {
+          console.error("❌ Error initializing managers:", error);
+        }
+      });
 
       // ==============================================
-      // SERVICE WORKER REGISTRATION (PWA Support)
+      // GLOBAL ERROR HANDLER
       // ==============================================
 
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          // Uncomment to enable PWA
-          // navigator.serviceWorker.register('/sw.js')
-          //   .then(registration => {
-          //     console.log('✅ Service Worker registered:', registration);
-          //   })
-          //   .catch(error => {
-          //     console.log('❌ Service Worker registration failed:', error);
-          //   });
-        });
-      }
+      window.addEventListener("error", function (e) {
+        console.error("Global error:", e.error);
+      });
 
       // ==============================================
-      // CONSOLE WARNINGS
+      // CONSOLE MESSAGE
       // ==============================================
 
-      if (process.env.NODE_ENV === "production") {
-        console.warn(
-          "%c⚠️ WARNING!",
-          "color: red; font-size: 40px; font-weight: bold;"
-        );
-        console.warn(
-          "%cUsing this console may allow attackers to impersonate you and steal your information using Self-XSS attacks. Do not enter or paste code that you don't understand.",
-          "font-size: 16px;"
-        );
-      }
+      const styles = [
+        "color: #06b6d4",
+        "font-size: 20px",
+        "font-weight: bold",
+        "text-shadow: 2px 2px 4px rgba(0,0,0,0.2)",
+      ].join(";");
 
-      // ==============================================
-      // ANALYTICS INITIALIZATION (Optional)
-      // ==============================================
-
-      // Google Analytics
-      // window.dataLayer = window.dataLayer || [];
-      // function gtag(){dataLayer.push(arguments);}
-      // gtag('js', new Date());
-      // gtag('config', 'YOUR-GA-ID');
-
-      // ==============================================
-      // EXPORT FOR TESTING (Optional)
-      // ==============================================
-
-      if (typeof module !== "undefined" && module.exports) {
-        module.exports = {
-          ThemeManager,
-          MobileMenuManager,
-          NavbarManager,
-          SmoothScrollManager,
-          ScrollToTopManager,
-          debounce,
-          throttle,
-        };
-      }
-
-      // ==============================================
-      // DEVELOPMENT HELPERS
-      // ==============================================
-
-      if (
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1"
-      ) {
-        console.log(
-          "%c🛠️ Development Mode Active",
-          "color: orange; font-size: 16px; font-weight: bold;"
-        );
-
-        // Add grid overlay for development (toggle with Ctrl+G)
-        let gridVisible = false;
-        document.addEventListener("keydown", (e) => {
-          if (e.ctrlKey && e.key === "g") {
-            e.preventDefault();
-            gridVisible = !gridVisible;
-
-            let grid = document.getElementById("dev-grid");
-            if (!grid) {
-              grid = document.createElement("div");
-              grid.id = "dev-grid";
-              grid.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-              linear-gradient(rgba(255,0,0,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,0,0,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-          `;
-              document.body.appendChild(grid);
-            }
-
-            grid.style.display = gridVisible ? "block" : "none";
-            console.log(`Grid overlay: ${gridVisible ? "ON" : "OFF"}`);
-          }
-        });
-      }
-
-      // ==============================================
-      // FINAL INITIALIZATION MESSAGE
-      // ==============================================
+      console.log("%c👋 Hello, fellow developer!", styles);
+      console.log(
+        "%cThanks for checking out the console! 🚀",
+        "color: #8b5cf6; font-size: 14px;"
+      );
+      console.log(
+        "%cLike what you see? Let's connect!",
+        "color: #10b981; font-size: 14px;"
+      );
+      console.log(
+        "%c📧 Kareem.apple1111@gmail.com",
+        "color: #3b82f6; font-size: 12px;"
+      );
 
       console.log(
         "%c✨ Portfolio Loaded Successfully!",
