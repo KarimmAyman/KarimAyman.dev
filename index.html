@@ -1,0 +1,3779 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <meta name="theme-color" content="#06b6d4" />
+    <title>Karim Ayman | Full Stack Developer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Professional Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                50: "#ecfeff",
+                100: "#cffafe",
+                400: "#22d3ee",
+                500: "#06b6d4",
+                600: "#0891b2",
+                700: "#0e7490",
+              },
+              dark: {
+                50: "#18181b",
+                100: "#27272a",
+                200: "#3f3f46",
+                300: "#52525b",
+                800: "#09090b",
+                900: "#030712",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Smooth font rendering for mobile */
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Custom scrollbar - thinner for mobile */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #09090b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3f3f46;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #52525b;
+      }
+
+      /* Enhanced glow effects */
+      .glow {
+        box-shadow: 0 0 15px rgba(34, 211, 238, 0.25),
+          0 0 30px rgba(34, 211, 238, 0.15);
+      }
+
+      @media (min-width: 768px) {
+        .glow {
+          box-shadow: 0 0 20px rgba(34, 211, 238, 0.3),
+            0 0 40px rgba(34, 211, 238, 0.2);
+        }
+      }
+
+      .glow-text {
+        text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+      }
+
+      @media (min-width: 768px) {
+        .glow-text {
+          text-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
+        }
+      }
+
+      /* Mobile menu animation - smoother */
+      .mobile-menu {
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, opacity;
+      }
+
+      .mobile-menu.closed {
+        transform: translateX(100%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .mobile-menu.open {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Backdrop blur for mobile menu */
+      .menu-backdrop {
+        transition: opacity 0.3s ease-in-out;
+        backdrop-filter: blur(4px);
+      }
+
+      .menu-backdrop.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Enhanced hamburger animation */
+      .hamburger span {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      /* Navbar scroll effect */
+      nav {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.3s ease;
+      }
+
+      nav.scroll-down {
+        transform: translateY(-100%);
+      }
+
+      nav.scroll-up {
+        transform: translateY(0);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      nav:has(#mobile-menu.open) {
+        transform: translateY(0) !important;
+      }
+
+      /* Optimized animations for mobile */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Enhanced button press effect for mobile */
+      .btn-press {
+        transition: transform 0.1s ease, box-shadow 0.1s ease;
+      }
+
+      .btn-press:active {
+        transform: scale(0.97);
+      }
+
+      /* Card hover effect - optimized for mobile */
+      .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      @media (hover: hover) {
+        .card-hover:hover {
+          transform: translateY(-4px);
+        }
+      }
+
+      /* Better touch target sizes */
+      @media (max-width: 768px) {
+        a,
+        button {
+          min-height: 44px;
+          min-width: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      /* Gradient text animation */
+      @keyframes gradient-shift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .gradient-animate {
+        background-size: 200% 200%;
+        animation: gradient-shift 3s ease infinite;
+      }
+
+      /* Pulse animation for badges */
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+        }
+      }
+
+      .pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      /* Mobile-optimized spacing */
+      @media (max-width: 640px) {
+        .container-mobile {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+
+      /* Safe area for notched devices */
+      @supports (padding: max(0px)) {
+        body {
+          padding-left: max(0px, env(safe-area-inset-left));
+          padding-right: max(0px, env(safe-area-inset-right));
+        }
+      }
+
+      /* Skeleton loading for images */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+
+      .dark .skeleton {
+        background: linear-gradient(
+          90deg,
+          #27272a 25%,
+          #3f3f46 50%,
+          #27272a 75%
+        );
+        background-size: 200% 100%;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+    </style>
+
+    <!-- Theme initialization script -->
+    <script>
+      if (!("theme" in localStorage)) {
+        localStorage.setItem("theme", "dark");
+      }
+
+      if (localStorage.theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gradient-to-br dark:from-dark-900 dark:via-dark-800 dark:to-dark-900 text-gray-800 dark:text-gray-100 antialiased transition-colors duration-300"
+  >
+    <!-- Mobile Menu Backdrop -->
+    <div
+      id="menu-backdrop"
+      class="menu-backdrop hidden fixed inset-0 bg-black/50 dark:bg-black/70 z-40 md:hidden"
+    ></div>
+
+    <!-- Navbar -->
+    <nav
+      class="fixed w-full z-50 bg-white/95 dark:bg-dark-900/95 backdrop-blur-xl border-b border-gray-200/80 dark:border-dark-100/80 transition-all duration-300"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14 sm:h-16 md:h-20">
+          <!-- Logo -->
+          <a href="#" class="flex-shrink-0 flex items-center gap-2 group">
+            <div
+              class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/50 dark:shadow-brand-500/30 transition-transform group-hover:scale-105"
+            >
+              K
+            </div>
+            <span
+              class="font-bold text-base sm:text-lg md:text-xl tracking-tight text-gray-900 dark:text-white"
+              >Karim Ayman</span
+            >
+          </a>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-center space-x-4 lg:space-x-8">
+            <a
+              href="#about"
+              class="text-sm lg:text-base text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors duration-200"
+              >About</a
+            >
+            <a
+              href="#skills"
+              class="text-sm lg:text-base text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors duration-200"
+              >Skills</a
+            >
+            <a
+              href="#projects"
+              class="text-sm lg:text-base text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors duration-200"
+              >Projects</a
+            >
+
+            <!-- Theme Toggle Desktop -->
+            <button
+              id="theme-toggle"
+              type="button"
+              class="p-2.5 rounded-lg bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-200 transition-all duration-200 border border-transparent dark:border-dark-200"
+              aria-label="Toggle theme"
+            >
+              <i
+                id="theme-toggle-light-icon"
+                class="fas fa-moon hidden text-base"
+              ></i>
+              <i
+                id="theme-toggle-dark-icon"
+                class="fas fa-sun hidden text-base"
+              ></i>
+            </button>
+
+            <a
+              href="#contact"
+              class="px-5 lg:px-6 py-2.5 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm lg:text-base font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-lg shadow-brand-500/30 dark:shadow-brand-500/50 hover:shadow-brand-500/40"
+              >Contact Me</a
+            >
+          </div>
+
+          <!-- Mobile Controls -->
+          <div class="flex md:hidden items-center gap-2">
+            <!-- Theme Toggle Mobile -->
+            <button
+              id="theme-toggle-mobile"
+              type="button"
+              class="p-2.5 rounded-lg bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-300 active:bg-gray-200 dark:active:bg-dark-200 transition-all duration-200"
+              aria-label="Toggle theme"
+            >
+              <i
+                id="theme-toggle-light-icon-mobile"
+                class="fas fa-moon hidden text-base"
+              ></i>
+              <i
+                id="theme-toggle-dark-icon-mobile"
+                class="fas fa-sun hidden text-base"
+              ></i>
+            </button>
+
+            <!-- Hamburger Button -->
+            <button
+              id="mobile-menu-button"
+              type="button"
+              class="hamburger p-2.5 rounded-lg bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-300 active:bg-gray-200 dark:active:bg-dark-200 transition-all duration-200"
+              aria-label="Toggle menu"
+            >
+              <div class="w-5 h-4 flex flex-col justify-between">
+                <span
+                  class="w-full h-0.5 bg-gray-600 dark:bg-gray-300 rounded-full"
+                ></span>
+                <span
+                  class="w-full h-0.5 bg-gray-600 dark:bg-gray-300 rounded-full"
+                ></span>
+                <span
+                  class="w-full h-0.5 bg-gray-600 dark:bg-gray-300 rounded-full"
+                ></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu closed md:hidden fixed top-14 sm:top-16 right-0 w-72 sm:w-80 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] bg-white dark:bg-dark-900 border-l border-gray-200 dark:border-dark-100 shadow-2xl overflow-y-auto"
+      >
+        <div class="flex flex-col p-5 sm:p-6 space-y-5">
+          <a
+            href="#about"
+            class="mobile-menu-link text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-semibold text-base sm:text-lg transition-colors duration-200 py-3 px-2 border-b border-gray-100 dark:border-dark-100 active:bg-gray-50 dark:active:bg-dark-50 rounded-lg"
+          >
+            <i
+              class="fas fa-user mr-3 text-brand-500 dark:text-brand-400 w-5"
+            ></i>
+            About Me
+          </a>
+          <a
+            href="#skills"
+            class="mobile-menu-link text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-semibold text-base sm:text-lg transition-colors duration-200 py-3 px-2 border-b border-gray-100 dark:border-dark-100 active:bg-gray-50 dark:active:bg-dark-50 rounded-lg"
+          >
+            <i
+              class="fas fa-code mr-3 text-brand-500 dark:text-brand-400 w-5"
+            ></i>
+            Skills
+          </a>
+          <a
+            href="#projects"
+            class="mobile-menu-link text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-semibold text-base sm:text-lg transition-colors duration-200 py-3 px-2 border-b border-gray-100 dark:border-dark-100 active:bg-gray-50 dark:active:bg-dark-50 rounded-lg"
+          >
+            <i
+              class="fas fa-folder mr-3 text-brand-500 dark:text-brand-400 w-5"
+            ></i>
+            Projects
+          </a>
+
+          <a
+            href="#contact"
+            class="mobile-menu-link w-full px-6 py-4 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-bold text-base rounded-xl hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-lg shadow-brand-500/30 text-center active:scale-95 mt-4"
+          >
+            <i class="fas fa-envelope mr-2"></i>
+            Contact Me
+          </a>
+
+          <!-- Social Links in Mobile Menu -->
+          <div class="pt-6 mt-6 border-t border-gray-200 dark:border-dark-100">
+            <p
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4"
+            >
+              Connect With Me
+            </p>
+            <div class="flex items-center gap-4">
+              <a
+                href="https://www.linkedin.com/in/karim-ayman-fawzy"
+                target="_blank"
+                class="flex-1 p-3 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors duration-200 text-center active:scale-95"
+              >
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/karrim_ayman/"
+                target="_blank"
+                class="flex-1 p-3 bg-pink-50 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-500/20 transition-colors duration-200 text-center active:scale-95"
+              >
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/kareem.elmoghier"
+                target="_blank"
+                class="flex-1 p-3 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors duration-200 text-center active:scale-95"
+              >
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <section
+      class="pt-16 sm:pt-20 pb-10 md:pt-32 md:pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-transparent relative"
+    >
+      <!-- Animated background gradient -->
+      <div
+        class="absolute inset-0 dark:opacity-30 opacity-0 pointer-events-none"
+      >
+        <div
+          class="absolute top-10 left-5 sm:top-16 md:top-20 md:left-10 w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 bg-brand-500 rounded-full filter blur-3xl animate-pulse"
+        ></div>
+        <div
+          class="absolute bottom-10 right-5 sm:bottom-16 md:bottom-20 md:right-10 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-purple-500 rounded-full filter blur-3xl animate-pulse"
+          style="animation-delay: 2s"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          <!-- Text Content -->
+          <div data-aos="fade-right" data-aos-duration="600" class="lg:order-1">
+            <!-- Profile Image - Mobile Only (centered at top) -->
+            <div
+              class="lg:hidden flex justify-center mb-8"
+              data-aos="fade-up"
+              data-aos-duration="600"
+            >
+              <div class="relative w-48 h-48 sm:w-56 sm:h-56">
+                <!-- Glow effect behind image -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-brand-400 to-purple-500 dark:from-brand-500 dark:to-purple-600 rounded-2xl blur-2xl opacity-30 dark:opacity-40 animate-pulse"
+                ></div>
+
+                <!-- Main Image -->
+                <img
+                  src="MyPecs.jpg"
+                  alt="Karim Ayman - Full Stack Developer"
+                  loading="eager"
+                  class="relative rounded-2xl shadow-2xl dark:shadow-brand-500/20 border-4 border-white dark:border-dark-100 object-cover w-full h-full"
+                />
+              </div>
+            </div>
+
+            <!-- Text Content -->
+            <div
+              class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 rounded-full border-2 border-brand-400/40 dark:border-brand-400/60 bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs sm:text-sm font-bold mb-5 sm:mb-6 backdrop-blur-sm pulse-glow"
+            >
+              <span
+                class="flex h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-brand-500 dark:bg-brand-400 mr-2 animate-pulse"
+              ></span>
+              Available for hire
+            </div>
+
+            <h1
+              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4 sm:mb-5 md:mb-6 leading-tight"
+            >
+              Building the bridge between
+              <span
+                class="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 glow-text gradient-animate"
+                >React</span
+              >
+              <span class="text-gray-900 dark:text-white">&</span>
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 glow-text gradient-animate"
+                >.NET</span
+              >
+            </h1>
+
+            <p
+              class="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-7 md:mb-8 leading-relaxed max-w-xl"
+            >
+              I am a detail-oriented software developer specializing in creating
+              scalable web applications. I combine modern front-end designs with
+              powerful back-end architecture.
+            </p>
+
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+              <a
+                href="#projects"
+                class="btn-press px-6 sm:px-7 md:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm sm:text-base font-bold rounded-xl hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-xl shadow-brand-500/30 dark:shadow-brand-500/50 hover:shadow-brand-500/40 glow text-center"
+              >
+                <i class="fas fa-rocket mr-2"></i>
+                View My Work
+              </a>
+              <a
+                href="https://github.com/KarimmAyman"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press px-6 sm:px-7 md:px-8 py-3.5 sm:py-4 bg-white dark:bg-dark-100 border-2 border-gray-300 dark:border-dark-200 text-gray-700 dark:text-gray-200 text-sm sm:text-base font-bold rounded-xl hover:border-brand-400 dark:hover:border-brand-400 hover:bg-gray-50 dark:hover:bg-dark-50 transition-all duration-200 text-center"
+              >
+                <i class="fab fa-github mr-2"></i> GitHub
+              </a>
+            </div>
+
+            <!-- Social Links -->
+            <div
+              class="mt-8 sm:mt-10 flex items-center gap-4 sm:gap-5 md:gap-6"
+            >
+              <span
+                class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium"
+                >Follow me:</span
+              >
+              <a
+                href="https://www.linkedin.com/in/karim-ayman-fawzy"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-400 hover:bg-brand-500 hover:text-white dark:hover:bg-brand-500 transition-all duration-200 transform hover:scale-110 active:scale-95"
+                aria-label="LinkedIn"
+              >
+                <i class="fab fa-linkedin text-lg sm:text-xl"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/karrim_ayman/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-400 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-200 transform hover:scale-110 active:scale-95"
+                aria-label="Instagram"
+              >
+                <i class="fab fa-instagram text-lg sm:text-xl"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/kareem.elmoghier"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-gray-100 dark:bg-dark-100 text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 transition-all duration-200 transform hover:scale-110 active:scale-95"
+                aria-label="Facebook"
+              >
+                <i class="fab fa-facebook text-lg sm:text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Profile Image - Desktop Only (right side) -->
+          <div
+            class="hidden lg:block relative lg:ml-auto lg:order-2"
+            data-aos="fade-left"
+            data-aos-duration="600"
+          >
+            <div class="relative w-full max-w-md mx-auto aspect-square">
+              <!-- Glow effect behind image -->
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-brand-400 to-purple-500 dark:from-brand-500 dark:to-purple-600 rounded-3xl blur-3xl opacity-30 dark:opacity-40 animate-pulse"
+              ></div>
+
+              <!-- Main Image -->
+              <img
+                src="MyPecs.jpg"
+                alt="Karim Ayman - Full Stack Developer"
+                loading="eager"
+                class="relative rounded-3xl shadow-2xl dark:shadow-brand-500/20 border-4 border-white dark:border-dark-100 object-cover w-full h-full transform rotate-3 hover:rotate-0 transition-transform duration-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section
+      id="skills"
+      class="py-10 sm:py-16 md:py-24 bg-gray-50 dark:bg-dark-800/50 border-y border-gray-200 dark:border-dark-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 md:mb-16"
+          data-aos="fade-up"
+          data-aos-duration="600"
+        >
+          <h2
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4"
+          >
+            Technical Expertise
+          </h2>
+          <p
+            class="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed"
+          >
+            My tech stack allows me to build complete solutions from database
+            design to user interface.
+          </p>
+        </div>
+
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
+        >
+          <!-- Frontend Card -->
+          <div
+            class="card-hover bg-white dark:bg-dark-100 p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-2xl dark:hover:shadow-brand-500/10 transition-all duration-300 border border-gray-100 dark:border-dark-200 group"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            data-aos-duration="600"
+          >
+            <div
+              class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-100 to-brand-100 dark:from-blue-500/20 dark:to-brand-500/20 rounded-xl flex items-center justify-center text-blue-600 dark:text-brand-400 text-2xl sm:text-3xl mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fab fa-react"></i>
+            </div>
+            <h3
+              class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4"
+            >
+              Frontend
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 dark:hover:bg-brand-500/20 hover:text-brand-600 dark:hover:text-brand-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >React.js</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 dark:hover:bg-brand-500/20 hover:text-brand-600 dark:hover:text-brand-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Tailwind CSS</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 dark:hover:bg-brand-500/20 hover:text-brand-600 dark:hover:text-brand-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >JavaScript</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 dark:hover:bg-brand-500/20 hover:text-brand-600 dark:hover:text-brand-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >HTML/CSS</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 dark:hover:bg-brand-500/20 hover:text-brand-600 dark:hover:text-brand-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Figma</span
+              >
+            </div>
+          </div>
+
+          <!-- Backend Card -->
+          <div
+            class="card-hover bg-white dark:bg-dark-100 p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-2xl dark:hover:shadow-purple-500/10 transition-all duration-300 border border-gray-100 dark:border-dark-200 group"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="600"
+          >
+            <div
+              class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-500/20 dark:to-pink-500/20 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 text-2xl sm:text-3xl mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-server"></i>
+            </div>
+            <h3
+              class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4"
+            >
+              Backend
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >ASP.NET Core</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Web API</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >C#</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >MVC</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >RESTful</span
+              >
+            </div>
+          </div>
+
+          <!-- Data & Tools Card -->
+          <div
+            class="card-hover bg-white dark:bg-dark-100 p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-2xl dark:hover:shadow-green-500/10 transition-all duration-300 border border-gray-100 dark:border-dark-200 group sm:col-span-2 md:col-span-1"
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="600"
+          >
+            <div
+              class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-500/20 dark:to-emerald-500/20 rounded-xl flex items-center justify-center text-green-600 dark:text-green-400 text-2xl sm:text-3xl mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-database"></i>
+            </div>
+            <h3
+              class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4"
+            >
+              Data & Tools
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-green-500/10 dark:hover:bg-green-500/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >SQL Server</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-green-500/10 dark:hover:bg-green-500/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Entity Framework</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-green-500/10 dark:hover:bg-green-500/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Git/GitHub</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-green-500/10 dark:hover:bg-green-500/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >Swagger</span
+              >
+              <span
+                class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-100 dark:bg-dark-200 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-green-500/10 dark:hover:bg-green-500/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 cursor-pointer active:scale-95"
+                >LINQ</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section
+      id="about"
+      class="py-10 sm:py-16 md:py-24 bg-white dark:bg-transparent"
+    >
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 sm:mb-10 md:mb-12"
+          data-aos="fade-up"
+          data-aos-duration="600"
+        >
+          Experience & Education
+        </h2>
+
+        <div class="space-y-8 sm:space-y-10 md:space-y-12">
+          <!-- Experience Item 1 -->
+          <div
+            class="flex gap-3 sm:gap-4 md:gap-6"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            <div class="flex flex-col items-center flex-shrink-0">
+              <div
+                class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg shadow-brand-500/50 flex-shrink-0"
+              ></div>
+              <div class="w-0.5 h-full bg-gray-200 dark:bg-dark-200 mt-2"></div>
+            </div>
+            <div class="flex-1 pb-6 sm:pb-8">
+              <span
+                class="inline-block px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide bg-brand-50 dark:bg-brand-500/10 rounded-full mb-2 sm:mb-3"
+                >Jan 2025 – Present</span
+              >
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-2"
+              >
+                STEM & Soft Skills Instructor
+              </h3>
+              <p
+                class="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 font-medium mt-1 sm:mt-2"
+              >
+                Techno Square, Mansoura
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 leading-relaxed"
+              >
+                Teaching Web Development, AI, and Soft Skills to students aged
+                12+. Leading practical projects like Smart Parking Systems and
+                Hand Gesture Controlled Cars.
+              </p>
+            </div>
+          </div>
+
+          <!-- Education Item 2 -->
+          <div
+            class="flex gap-3 sm:gap-4 md:gap-6"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            <div class="flex flex-col items-center flex-shrink-0">
+              <div
+                class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-400 dark:bg-dark-200 flex-shrink-0"
+              ></div>
+              <div class="w-0.5 h-full bg-gray-200 dark:bg-dark-200 mt-2"></div>
+            </div>
+            <div class="flex-1 pb-6 sm:pb-8">
+              <span
+                class="inline-block px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-100 dark:bg-dark-200 rounded-full mb-2 sm:mb-3"
+                >2021 – 2025</span
+              >
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-2"
+              >
+                Bachelor of Computer & Information Sciences
+              </h3>
+              <p
+                class="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 font-medium mt-1 sm:mt-2"
+              >
+                Kafr El-Sheikh University
+              </p>
+              <p
+                class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2 sm:mt-3"
+              >
+                Graduated with a GPA of 3.5.
+              </p>
+            </div>
+          </div>
+
+          <!-- Certifications Item 3 -->
+          <div
+            class="flex gap-3 sm:gap-4 md:gap-6"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            <div class="flex flex-col items-center flex-shrink-0">
+              <div
+                class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-400 dark:bg-dark-200 flex-shrink-0"
+              ></div>
+            </div>
+            <div class="flex-1">
+              <span
+                class="inline-block px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-gray-100 dark:bg-dark-200 rounded-full mb-2 sm:mb-3"
+                >Certifications</span
+              >
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-2"
+              >
+                Specialized Training
+              </h3>
+              <ul
+                class="mt-3 sm:mt-4 space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-600 dark:text-gray-400"
+              >
+                <li class="flex items-start">
+                  <i
+                    class="fas fa-certificate text-brand-500 dark:text-brand-400 mt-1 mr-3 flex-shrink-0 text-sm sm:text-base"
+                  ></i>
+                  <span
+                    ><strong
+                      class="text-gray-700 dark:text-gray-300 font-semibold"
+                      >ITI (150 hrs):</strong
+                    >
+                    Frontend Development (React, Tailwind, Bootstrap).</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i
+                    class="fas fa-certificate text-brand-500 dark:text-brand-400 mt-1 mr-3 flex-shrink-0 text-sm sm:text-base"
+                  ></i>
+                  <span
+                    ><strong
+                      class="text-gray-700 dark:text-gray-300 font-semibold"
+                      >DEPI:</strong
+                    >
+                    .NET Backend Development Track.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section
+      id="projects"
+      class="py-10 sm:py-16 md:py-24 bg-gray-50 dark:bg-dark-800/50 border-t border-gray-200 dark:border-dark-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 sm:mb-12 md:mb-16 text-center"
+          data-aos="fade-up"
+          data-aos-duration="600"
+        >
+          Featured Projects
+        </h2>
+
+        <div class="grid lg:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
+          <!-- Project 1: Aoun Platform (Featured - Full Width) -->
+          <div
+            class="lg:col-span-2 group bg-white dark:bg-dark-100 rounded-xl md:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl dark:hover:shadow-green-500/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-dark-200 card-hover"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            <div class="grid md:grid-cols-2 gap-0">
+              <!-- Thumbnail - Fixed Height with 100% fit -->
+              <div
+                class="relative w-full h-56 sm:h-64 md:h-80 lg:h-full overflow-hidden bg-gray-100 dark:bg-dark-200"
+              >
+                <img
+                  src="Aoun.png"
+                  alt="Aoun Platform"
+                  class="absolute inset-0 w-full h-full object-contain p-4 pb-20 :scale-105 transition-transform duration-500"
+                />
+
+                <!-- Enhanced gradient overlay - darker for better text visibility -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-gray-900/20 pointer-events-none"
+                ></div>
+
+                <!-- Professional Badge (Top Right) -->
+                <div
+                  class="absolute top-3 sm:top-4 right-3 sm:right-4 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border border-white/30 dark:border-gray-700/50 text-gray-900 dark:text-white text-xs font-bold rounded-lg shadow-lg"
+                >
+                  <i class="fas fa-graduation-cap mr-1"></i>
+                  GRADUATION PROJECT
+                </div>
+
+                <!-- Bottom Info Card with Glass Effect -->
+                <div
+                  class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg rounded-xl p-3 sm:p-4 border border-white/30 dark:border-gray-700/50 shadow-xl"
+                >
+                  <p
+                    class="text-xs font-semibold text-gray-800 dark:text-gray-200 mb-2 sm:mb-3 flex items-center"
+                  >
+                    <i
+                      class="fas fa-puzzle-piece text-green-600 dark:text-green-400 mr-2"
+                    ></i>
+                    Dual Platform Solution
+                  </p>
+                  <div class="grid grid-cols-2 gap-2 sm:gap-3 text-xs">
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center flex-shrink-0"
+                      >
+                        <i
+                          class="fas fa-mobile-alt text-blue-600 dark:text-blue-400 text-sm"
+                        ></i>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p
+                          class="font-bold text-gray-900 dark:text-white truncate"
+                        >
+                          Mobile
+                        </p>
+                        <p
+                          class="text-gray-600 dark:text-gray-400 truncate text-xs"
+                        >
+                          Transportation
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-7 h-7 sm:w-8 sm:h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center flex-shrink-0"
+                      >
+                        <i
+                          class="fas fa-globe text-green-600 dark:text-green-400 text-sm"
+                        ></i>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p
+                          class="font-bold text-gray-900 dark:text-white truncate"
+                        >
+                          Web
+                        </p>
+                        <p
+                          class="text-gray-600 dark:text-gray-400 truncate text-xs"
+                        >
+                          Housing
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="p-5 sm:p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                  <h3
+                    class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 group-hover:text-green-600 dark:group-hover:text-green-400 transition"
+                  >
+                    Aoun Platform - Integrated Student Services
+                  </h3>
+                  <p
+                    class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed"
+                  >
+                    <strong>Team Lead & Backend Developer</strong> |
+                    Comprehensive dual-platform solution for student services.
+                    <strong>Backend:</strong> ASP.NET Core Web API with JWT
+                    auth, Stripe & Paymob payment integration.
+                    <strong>Web Platform (React.js + Vite):</strong> Housing
+                    management and student opportunities.
+                    <strong>Mobile App (Flutter):</strong>
+                    Transportation system with Google Maps integration, offline
+                    support via Hive, and BLoC state management.
+                  </p>
+
+                  <!-- Tech Stack -->
+                  <div class="mb-3 sm:mb-4">
+                    <p
+                      class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2"
+                    >
+                      🛠️ TECHNOLOGY STACK
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                      <span
+                        class="px-2 sm:px-3 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-lg border border-green-200 dark:border-green-700"
+                        >ASP.NET Core</span
+                      >
+                      <span
+                        class="px-2 sm:px-3 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-lg border border-green-200 dark:border-green-700"
+                        >React.js</span
+                      >
+                      <span
+                        class="px-2 sm:px-3 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-lg border border-green-200 dark:border-green-700"
+                        >Flutter</span
+                      >
+                      <span
+                        class="px-2 sm:px-3 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-lg border border-green-200 dark:border-green-700"
+                        >SQL Server</span
+                      >
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Vite</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Axios</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >BLoC</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Dio</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Hive</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Google Maps</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Stripe</span
+                      >
+                      <span
+                        class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded border border-blue-200 dark:border-blue-800"
+                        >Paymob</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Video Demos -->
+                  <div class="mb-4 sm:mb-6">
+                    <p
+                      class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 sm:mb-3"
+                    >
+                      📹 Video Demonstrations:
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 sm:gap-3 text-xs">
+                      <a
+                        href="#aoun-auth-video"
+                        class="py-2 px-2 sm:px-3 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 font-semibold rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition text-center active:scale-95"
+                        >🔐 Auth Flow</a
+                      >
+                      <a
+                        href="#aoun-driver-video"
+                        class="py-2 px-2 sm:px-3 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 font-semibold rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition text-center active:scale-95"
+                        >🚗 Driver Flow</a
+                      >
+                      <a
+                        href="#aoun-student-video"
+                        class="py-2 px-2 sm:px-3 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 font-semibold rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition text-center active:scale-95"
+                        >👨‍🎓 Passenger Flow</a
+                      >
+                      <a
+                        href="#aoun-web-promo"
+                        class="py-2 px-2 sm:px-3 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 font-semibold rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition text-center active:scale-95"
+                        >🌐 Web Promo</a
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 gap-2 sm:gap-3">
+                  <a
+                    href="#aoun-details"
+                    class="btn-press text-center py-2.5 sm:py-3 border-2 border-green-500 dark:border-green-400 text-green-700 dark:text-green-300 font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition text-xs sm:text-sm"
+                  >
+                    <i class="fas fa-info-circle mr-1 sm:mr-2"></i>Full Details
+                  </a>
+                  <a
+                    href="https://github.com/KarimmAyman/StudentPathProject"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-press text-center py-2.5 sm:py-3 bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-emerald-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 transition shadow-lg text-xs sm:text-sm"
+                  >
+                    <i class="fab fa-github mr-1 sm:mr-2"></i>View Code
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: Maona Trading Company -->
+          <div
+            class="group bg-white dark:bg-dark-100 rounded-xl md:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl dark:hover:shadow-blue-500/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-dark-200 card-hover"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            data-aos-duration="600"
+          >
+            <!-- Thumbnail - 100% fit with background -->
+            <div
+              class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20"
+            >
+              <img
+                src="web 2.jpg"
+                alt="Maona Trading Company"
+                class="absolute inset-0 w-full h-full object-contain p-8 sm:p-10 md:p-4 group-hover:scale-110 transition-transform duration-500"
+              />
+
+              <!-- Enhanced gradient overlay -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent pointer-events-none"
+              ></div>
+
+              <!-- Professional overlay text with better contrast -->
+              <div
+                class="absolute inset-0 flex items-center justify-center pointer-events-none"
+              >
+                <span
+                  class="text-3xl sm:text-4xl font-bold text-white tracking-widest drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                >
+                  MAONA
+                </span>
+              </div>
+
+              <!-- Bottom category badges with enhanced visibility -->
+              <div
+                class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-center gap-2"
+              >
+                <span
+                  class="px-2.5 sm:px-3 py-1 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-blue-600 dark:text-blue-400 text-xs font-bold rounded-lg border border-white/30 dark:border-gray-700/50 shadow-lg"
+                >
+                  Food Distribution
+                </span>
+                <span
+                  class="px-2.5 sm:px-3 py-1 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-800 dark:text-gray-200 text-xs font-semibold rounded-lg border border-white/30 dark:border-gray-700/50 shadow-lg"
+                >
+                  Saudi Arabia
+                </span>
+              </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+              <h3
+                class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition"
+              >
+                Maona Trading Company
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed"
+              >
+                Professional business website for Saudi Arabia's leading food
+                distribution company. Showcases multiple product categories and
+                international brands (Mama Sauce, Makin, Top Top, Lutosa,
+                Crinkle Cook, Cavendish, Jordina). Fully responsive design built
+                with modern frontend technologies.
+              </p>
+
+              <!-- Tech Stack -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+                <span
+                  class="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-lg border border-blue-200 dark:border-blue-700"
+                  >HTML5</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-lg border border-blue-200 dark:border-blue-700"
+                  >Tailwind CSS</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-lg border border-blue-200 dark:border-blue-700"
+                  >JavaScript</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-lg border border-blue-200 dark:border-blue-700"
+                  >Responsive</span
+                >
+              </div>
+
+              <a
+                href="https://karimmayman.github.io/maounahNew/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press inline-flex items-center justify-center w-full py-2.5 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-600 dark:from-blue-600 dark:to-cyan-700 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-700 transition shadow-lg group-hover:shadow-blue-500/50 text-xs sm:text-sm"
+              >
+                View Live Demo
+                <i
+                  class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 3: Audiophile E-Commerce -->
+          <div
+            class="group bg-white dark:bg-dark-100 rounded-xl md:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl dark:hover:shadow-orange-500/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-dark-200 card-hover"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="600"
+          >
+            <!-- Thumbnail - 100% fit with background -->
+            <div
+              class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20"
+            >
+              <img
+                src="AudioPhile.png"
+                alt="Audiophile E-Commerce"
+                class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+              />
+
+              <!-- Enhanced gradient overlay for better text visibility -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-gray-900/85 via-gray-900/40 to-gray-900/20 pointer-events-none"
+              ></div>
+
+              <!-- Professional brand name with strong shadow -->
+              <div
+                class="absolute inset-0 flex items-center justify-center pointer-events-none"
+              >
+                <span
+                  class="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-widest drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                >
+                  AUDIOPHILE
+                </span>
+              </div>
+
+              <!-- Bottom tag with enhanced visibility -->
+              <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
+                <span
+                  class="px-3 sm:px-4 py-1 sm:py-1.5 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-orange-600 dark:text-orange-400 text-xs font-bold rounded-lg border border-white/30 dark:border-gray-700/50 shadow-lg"
+                >
+                  <i class="fas fa-headphones mr-1"></i>
+                  Premium Audio
+                </span>
+              </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+              <h3
+                class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition"
+              >
+                Audiophile E-Commerce
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed"
+              >
+                Modern e-commerce frontend for premium audio equipment. Features
+                product catalog, cart management, checkout process, and
+                pixel-perfect UI from Figma designs. Built with React and styled
+                using Tailwind CSS for responsive layouts.
+              </p>
+
+              <!-- Tech Stack -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >React.js</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Tailwind CSS</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Figma</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Context API</span
+                >
+              </div>
+
+              <a
+                href="https://audiophiles-e-commerce-app.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press inline-flex items-center justify-center w-full py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition shadow-lg group-hover:shadow-orange-500/50 text-xs sm:text-sm"
+              >
+                View Live Demo
+                <i
+                  class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 4: Online Quiz Platform -->
+          <div
+            class="group bg-white dark:bg-dark-100 rounded-xl md:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl dark:hover:shadow-orange-500/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-dark-200 card-hover"
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="600"
+          >
+            <!-- Thumbnail - 100% fit with background -->
+            <div
+              class="relative w-full h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20"
+            >
+              <img
+                src="onlineQuiz.png"
+                alt="Quiz Platform"
+                class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+              />
+
+              <!-- Enhanced gradient overlay -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-gray-900/85 via-gray-900/40 to-gray-900/20 pointer-events-none"
+              ></div>
+
+              <!-- Professional title with strong shadow -->
+              <div
+                class="absolute inset-0 flex items-center justify-center pointer-events-none"
+              >
+                <span
+                  class="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-widest drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                >
+                  QUIZ MASTER
+                </span>
+              </div>
+
+              <!-- Bottom info badges with enhanced visibility -->
+              <div
+                class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex gap-2 flex-wrap"
+              >
+                <span
+                  class="px-2.5 sm:px-3 py-1 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-orange-600 dark:text-orange-400 text-xs font-bold rounded-lg border border-white/30 dark:border-gray-700/50 shadow-lg"
+                >
+                  Full-Stack
+                </span>
+                <span
+                  class="px-2.5 sm:px-3 py-1 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-800 dark:text-gray-200 text-xs font-semibold rounded-lg border border-white/30 dark:border-gray-700/50 shadow-lg"
+                >
+                  MVC + API
+                </span>
+              </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+              <h3
+                class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition"
+              >
+                Online Quiz Platform
+              </h3>
+              <p
+                class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed"
+              >
+                Complete quiz management system with
+                <strong>ASP.NET Core MVC</strong> frontend and
+                <strong>Web API</strong> backend. Features secure JWT
+                authentication, randomized questions, timer functionality, and
+                score tracking. Backend uses
+                <strong>Repository Pattern</strong> with Entity Framework for
+                clean architecture.
+              </p>
+
+              <!-- Tech Stack -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >ASP.NET MVC</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Web API</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Repository Pattern</span
+                >
+                <span
+                  class="px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold rounded-lg border border-orange-200 dark:border-orange-700"
+                  >Entity Framework</span
+                >
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 sm:gap-3">
+                <a
+                  href="https://quizmasterplatform.runasp.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-press text-center py-2.5 sm:py-3 border-2 border-orange-500 dark:border-orange-400 text-orange-700 dark:text-orange-300 font-semibold rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition text-xs sm:text-sm"
+                  >MVC App</a
+                >
+                <a
+                  href="https://quizmasterplatformapi.runasp.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-press text-center py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition shadow-lg text-xs sm:text-sm"
+                  >API Docs</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Aoun Project Details Section -->
+    <section
+      id="aoun-details"
+      class="py-10 sm:py-16 md:py-24 bg-white dark:bg-dark-900 border-t border-gray-200 dark:border-dark-100"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            Aoun Platform - Complete Technical Showcase
+          </h2>
+          <p
+            class="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-4 sm:mb-5 md:mb-6 leading-relaxed px-4"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            data-aos-duration="600"
+          >
+            Dual-platform solution combining
+            <strong>React.js web application</strong> for housing &
+            opportunities with <strong>Flutter mobile app</strong> for
+            transportation management. Powered by
+            <strong>ASP.NET Core</strong> backend.
+          </p>
+          <div
+            class="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 max-w-2xl"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="600"
+          >
+            <div class="text-center">
+              <i
+                class="fas fa-mobile-alt text-xl sm:text-2xl text-green-600 dark:text-green-400 mb-1"
+              ></i>
+              <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Flutter App
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                Transportation
+              </p>
+            </div>
+            <div class="text-green-400 text-xl sm:text-2xl">+</div>
+            <div class="text-center">
+              <i
+                class="fas fa-globe text-xl sm:text-2xl text-green-600 dark:text-green-400 mb-1"
+              ></i>
+              <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                React.js Web
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                Housing & Events
+              </p>
+            </div>
+            <div class="text-green-400 text-xl sm:text-2xl">=</div>
+            <div class="text-center">
+              <i
+                class="fas fa-heart text-xl sm:text-2xl text-green-600 dark:text-green-400 mb-1"
+              ></i>
+              <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                One Goal
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                Student Life
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Video Showcase Grid -->
+        <div
+          class="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-8 sm:mb-10 md:mb-12"
+        >
+          <!-- Auth Flow Video -->
+          <div
+            id="aoun-auth-video"
+            class="bg-gray-50 dark:bg-dark-100 rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-gray-200 dark:border-dark-200 hover:shadow-xl transition-shadow duration-300"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            <h3
+              class="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2"
+            >
+              <span
+                class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0"
+              >
+                <i class="fas fa-lock text-sm sm:text-base"></i>
+              </span>
+              <span class="leading-tight">Authentication & Authorization</span>
+            </h3>
+            <div
+              class="relative w-full rounded-lg md:rounded-xl overflow-hidden mb-3 sm:mb-4 bg-gray-900"
+              style="padding-top: 56.25%"
+            >
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                class="absolute top-0 left-0 w-full h-full object-contain"
+              >
+                <source
+                  src="AounVideos/AppAuth (online-video-cutter.com).mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+            >
+              JWT-based authentication with role-based access control across
+              both web and mobile platforms.
+            </p>
+          </div>
+
+          <!-- Driver App Video -->
+          <div
+            id="aoun-driver-video"
+            class="bg-gray-50 dark:bg-dark-100 rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-gray-200 dark:border-dark-200 hover:shadow-xl transition-shadow duration-300"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            data-aos-duration="600"
+          >
+            <h3
+              class="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2"
+            >
+              <span
+                class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0"
+              >
+                <i class="fas fa-car text-sm sm:text-base"></i>
+              </span>
+              <span class="leading-tight">Driver Flow (Flutter)</span>
+            </h3>
+            <div
+              class="relative w-full rounded-lg md:rounded-xl overflow-hidden mb-3 sm:mb-4 bg-gray-900"
+              style="padding-top: 56.25%"
+            >
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                class="absolute top-0 left-0 w-full h-full object-contain"
+              >
+                <source
+                  src="AounVideos/DriverAuth (online-video-cutter.com).mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+            >
+              Real-time GPS tracking, route optimization with Google Maps API,
+              and offline data with Hive.
+            </p>
+          </div>
+
+          <!-- Student App Video -->
+          <div
+            id="aoun-student-video"
+            class="bg-gray-50 dark:bg-dark-100 rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-gray-200 dark:border-dark-200 hover:shadow-xl transition-shadow duration-300"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            data-aos-duration="600"
+          >
+            <h3
+              class="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2"
+            >
+              <span
+                class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0"
+              >
+                <i class="fas fa-user-graduate text-sm sm:text-base"></i>
+              </span>
+              <span class="leading-tight">Passenger Flow (Flutter)</span>
+            </h3>
+            <div
+              class="relative w-full rounded-lg md:rounded-xl overflow-hidden mb-3 sm:mb-4 bg-gray-900"
+              style="padding-top: 56.25%"
+            >
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                class="absolute top-0 left-0 w-full h-full object-contain"
+              >
+                <source
+                  src="AounVideos/PassengerFlow-ezgif.com-video-speed.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+            >
+              Transportation booking, trip tracking, payment integration (Stripe
+              & Paymob), and BLoC state management.
+            </p>
+          </div>
+
+          <!-- Web Promo Video -->
+          <div
+            id="aoun-web-promo"
+            class="bg-gray-50 dark:bg-dark-100 rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-6 border border-gray-200 dark:border-dark-200 hover:shadow-xl transition-shadow duration-300"
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="600"
+          >
+            <h3
+              class="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2"
+            >
+              <span
+                class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0"
+              >
+                <i class="fas fa-desktop text-sm sm:text-base"></i>
+              </span>
+              <span class="leading-tight">Web Platform (React.js)</span>
+            </h3>
+            <div
+              class="relative w-full rounded-lg md:rounded-xl overflow-hidden mb-3 sm:mb-4 bg-gray-900"
+              style="padding-top: 56.25%"
+            >
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                class="absolute top-0 left-0 w-full h-full object-contain"
+              >
+                <source
+                  src="AounVideos/webPromo (online-video-cutter.com) (1).mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+            >
+              Housing management, student opportunities, event registration
+              built with React.js + Vite and Axios API integration.
+            </p>
+          </div>
+        </div>
+
+<!-- My Technical Contributions -->
+<div
+  class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8 border-2 border-blue-200 dark:border-blue-800 mb-6 sm:mb-8 md:mb-10"
+  data-aos="fade-up"
+  data-aos-duration="600"
+>
+  <div class="text-center mb-6 sm:mb-8">
+    <span
+      class="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4"
+    >
+      My Role: Team Leader & Backend Developer
+    </span>
+    <h3
+      class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+    >
+      My Technical Contributions
+    </h3>
+    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
+      Led backend development and built the complete React web application
+    </p>
+  </div>
+
+  <!-- Two-Column Tech Stack: What I Built -->
+  <div class="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+    <!-- Backend Development (My Work) -->
+    <div
+      class="bg-white dark:bg-dark-100 rounded-lg md:rounded-xl p-4 sm:p-6 border-2 border-purple-200 dark:border-purple-800 hover:shadow-lg transition-all duration-300"
+    >
+      <div class="flex items-center gap-3 mb-4 sm:mb-6">
+        <div
+          class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0"
+        >
+          <i
+            class="fas fa-server text-lg sm:text-xl text-purple-600 dark:text-purple-400"
+          ></i>
+        </div>
+        <div>
+          <h4
+            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Backend API Modules
+          </h4>
+          <p class="text-xs text-purple-600 dark:text-purple-400 font-medium">
+            ASP.NET Core
+          </p>
+        </div>
+      </div>
+      <ul class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-purple-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Authentication System:</strong> Implemented JWT-based
+            authentication with role-based authorization (4 user roles)</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-purple-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Student Housing Module:</strong> Complete API for housing
+            requests, applications, and management system</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-purple-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Activities Management:</strong> Built endpoints for campus
+            events, workshops, and student registration</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-purple-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Driver Registration:</strong> API for driver management
+            and verification system</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-purple-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>RESTful Design:</strong> Clean architecture with Entity
+            Framework Core and SQL Server</span
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Web Frontend (My Work) -->
+    <div
+      class="bg-white dark:bg-dark-100 rounded-lg md:rounded-xl p-4 sm:p-6 border-2 border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300"
+    >
+      <div class="flex items-center gap-3 mb-4 sm:mb-6">
+        <div
+          class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0"
+        >
+          <i
+            class="fas fa-globe text-lg sm:text-xl text-blue-600 dark:text-blue-400"
+          ></i>
+        </div>
+        <div>
+          <h4
+            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Web Application
+          </h4>
+          <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">
+            React.js + Vite
+          </p>
+        </div>
+      </div>
+      <ul class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-blue-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Authentication UI:</strong> Login, registration, and
+            secure session management with JWT tokens</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-blue-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Housing Portal:</strong> Browse housing options, submit
+            applications, and track request status</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-blue-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Activities & Events:</strong> View campus events, register
+            for workshops, and manage bookings</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-blue-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Axios Integration:</strong> Configured HTTP client with
+            interceptors for secure API communication</span
+          >
+        </li>
+        <li class="flex items-start text-gray-700 dark:text-gray-300">
+          <i
+            class="fas fa-check-circle text-blue-500 mt-0.5 mr-2.5 flex-shrink-0"
+          ></i>
+          <span
+            ><strong>Responsive Design:</strong> Mobile-first UI with dark
+            mode, built with Tailwind CSS</span
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Project Team & Ecosystem -->
+<div class="mb-6 sm:mb-8 md:mb-10">
+  <h3
+    class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 text-center"
+    data-aos="fade-up"
+  >
+    Complete Project Ecosystem
+  </h3>
+  <div class="grid md:grid-cols-3 gap-4 sm:gap-6">
+    <!-- Backend Modules (My Work) -->
+    <div
+      class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/10 dark:to-indigo-900/10 rounded-lg md:rounded-xl p-4 sm:p-6 border border-purple-200 dark:border-purple-800"
+      data-aos="fade-up"
+      data-aos-duration="600"
+    >
+      <div class="flex items-center justify-between mb-3 sm:mb-4">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <i
+            class="fas fa-server text-xl sm:text-2xl text-purple-600 dark:text-purple-400"
+          ></i>
+          <h4
+            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Backend Modules
+          </h4>
+        </div>
+        <span
+          class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs font-semibold"
+          >My Work</span
+        >
+      </div>
+      <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3">
+        ASP.NET Core • SQL Server • JWT • EF Core
+      </p>
+      <p class="text-xs text-gray-500 dark:text-gray-500">
+        Authentication, Student Housing, Activities Management, and Driver
+        Registration APIs
+      </p>
+    </div>
+
+    <!-- Web Frontend (My Work) -->
+    <div
+      class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 rounded-lg md:rounded-xl p-4 sm:p-6 border border-blue-200 dark:border-blue-800"
+      data-aos="fade-up"
+      data-aos-delay="100"
+      data-aos-duration="600"
+    >
+      <div class="flex items-center justify-between mb-3 sm:mb-4">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <i
+            class="fas fa-globe text-xl sm:text-2xl text-blue-600 dark:text-blue-400"
+          ></i>
+          <h4
+            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Web Platform
+          </h4>
+        </div>
+        <span
+          class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-semibold"
+          >My Work</span
+        >
+      </div>
+      <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3">
+        React.js • Vite • Axios • Tailwind CSS
+      </p>
+      <p class="text-xs text-gray-500 dark:text-gray-500">
+        Complete student portal with authentication, housing requests, and
+        events management
+      </p>
+    </div>
+
+    <!-- Other Modules (Team's Work) -->
+    <div
+      class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-lg md:rounded-xl p-4 sm:p-6 border border-green-200 dark:border-green-800"
+      data-aos="fade-up"
+      data-aos-delay="200"
+      data-aos-duration="600"
+    >
+      <div class="flex items-center justify-between mb-3 sm:mb-4">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <i
+            class="fas fa-mobile-alt text-xl sm:text-2xl text-green-600 dark:text-green-400"
+          ></i>
+          <h4
+            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Additional Features
+          </h4>
+        </div>
+        <span
+          class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs font-semibold"
+          >Team</span
+        >
+      </div>
+      <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3">
+        Flutter • Payment Gateways • Google Maps
+      </p>
+      <p class="text-xs text-gray-500 dark:text-gray-500">
+        Mobile app, transportation system, and payment integrations (developed
+        by team members)
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- My Development Tools -->
+<div
+  class="bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-900/10 dark:to-slate-900/10 rounded-lg md:rounded-xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-800 mb-6 sm:mb-8 md:mb-10"
+  data-aos="fade-up"
+  data-aos-duration="600"
+>
+  <h3
+    class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 text-center flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
+  >
+    <i class="fas fa-tools text-gray-600 dark:text-gray-400"></i>
+    <span>Development Tools & Workflow</span>
+  </h3>
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fas fa-code text-blue-600 dark:text-blue-400 text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          Visual Studio
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">
+          ASP.NET Core backend
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fas fa-file-code text-cyan-600 dark:text-cyan-400 text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          VS Code
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">
+          React development
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fab fa-github text-gray-900 dark:text-white text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          GitHub
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">
+          Version control
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fas fa-vial text-orange-600 dark:text-orange-400 text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          Postman
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">API testing</p>
+      </div>
+    </div>
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fas fa-database text-red-600 dark:text-red-400 text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          SSMS
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">
+          Database management
+        </p>
+      </div>
+    </div>
+    <div class="flex items-start gap-2 sm:gap-3">
+      <div
+        class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0"
+      >
+        <i
+          class="fas fa-layer-group text-indigo-600 dark:text-indigo-400 text-sm sm:text-base"
+        ></i>
+      </div>
+      <div class="min-w-0">
+        <h4
+          class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate"
+        >
+          Swagger
+        </h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">API docs</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- My Leadership & Technical Impact -->
+<div
+  class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-lg md:rounded-xl p-4 sm:p-6 md:p-8 border border-green-200 dark:border-green-800 mb-6 sm:mb-8 md:mb-10"
+  data-aos="fade-up"
+  data-aos-duration="600"
+>
+  <h3
+    class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 text-center"
+  >
+    Leadership & Technical Impact
+  </h3>
+  <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+    <div>
+      <h4
+        class="text-base sm:text-lg font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center gap-2"
+      >
+        <i class="fas fa-users-cog text-sm sm:text-base"></i>
+        <span>Team Leadership</span>
+      </h4>
+      <ul class="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Led backend development team for the project</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          >          </i>
+          <span>Coordinated between backend, web, and mobile development teams</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Managed agile sprints using GitHub for version control</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Conducted code reviews and maintained technical documentation</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Collaborated in team environment with agile planning</span>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h4
+        class="text-base sm:text-lg font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center gap-2"
+      >
+        <i class="fas fa-code text-sm sm:text-base"></i>
+        <span>Technical Achievements</span>
+      </h4>
+      <ul class="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Built secure JWT authentication with role-based access control</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Developed Student Housing module with complete CRUD operations</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Created Activities Management system for campus events</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Implemented Driver Registration API with verification flow</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i
+            class="fas fa-chevron-right text-green-500 mt-0.5 text-xs flex-shrink-0"
+          ></i>
+          <span>Integrated Axios for seamless React-API communication</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Project Statistics -->
+<div
+  class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10"
+  data-aos="fade-up"
+  data-aos-duration="600"
+>
+  <div
+    class="text-center p-3 sm:p-4 md:p-6 bg-white dark:bg-dark-100 rounded-lg md:rounded-xl border border-gray-200 dark:border-dark-200 hover:shadow-lg transition-all duration-300"
+  >
+    <div
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-1 sm:mb-2"
+    >
+      3
+    </div>
+    <p
+      class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300"
+    >
+      Core Modules
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+      Housing, Activities, Auth
+    </p>
+  </div>
+  <div
+    class="text-center p-3 sm:p-4 md:p-6 bg-white dark:bg-dark-100 rounded-lg md:rounded-xl border border-gray-200 dark:border-dark-200 hover:shadow-lg transition-all duration-300"
+  >
+    <div
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 mb-1 sm:mb-2"
+    >
+      JWT
+    </div>
+    <p
+      class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300"
+    >
+      Authentication
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+      Role-Based Access
+    </p>
+  </div>
+  <div
+    class="text-center p-3 sm:p-4 md:p-6 bg-white dark:bg-dark-100 rounded-lg md:rounded-xl border border-gray-200 dark:border-dark-200 hover:shadow-lg transition-all duration-300"
+  >
+    <div
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-1 sm:mb-2"
+    >
+      React
+    </div>
+    <p
+      class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300"
+    >
+      Web Platform
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+      Full Frontend
+    </p>
+  </div>
+  <div
+    class="text-center p-3 sm:p-4 md:p-6 bg-white dark:bg-dark-100 rounded-lg md:rounded-xl border border-gray-200 dark:border-dark-200 hover:shadow-lg transition-all duration-300"
+  >
+    <div
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-600 dark:text-cyan-400 mb-1 sm:mb-2"
+    >
+      100%
+    </div>
+    <p
+      class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300"
+    >
+      Responsive
+    </p>
+    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+      Mobile-First
+    </p>
+  </div>
+</div>
+
+<!-- Back to Projects Button -->
+<div class="text-center" data-aos="fade-up" data-aos-duration="600">
+  <a
+    href="#projects"
+    class="btn-press inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition shadow-lg hover:shadow-green-500/50 text-sm sm:text-base"
+  >
+    <i class="fas fa-arrow-left mr-2"></i>
+    Back to All Projects
+  </a>
+</div>
+      </div>
+    </section>
+<!-- Contact Section - ULTIMATE ENHANCED -->
+<section
+  id="contact"
+  class="py-12 sm:py-16 md:py-20 lg:py-24 bg-white dark:bg-transparent relative overflow-hidden"
+>
+  <!-- Enhanced Background Decoration -->
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-brand-50 via-blue-50 to-purple-50 dark:from-brand-500/5 dark:via-blue-500/5 dark:to-purple-500/5 opacity-50"
+  ></div>
+  <div
+    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItaDJ2LTJoLTJ6bTAgNGgtMnYyaDJ2LTJ6bTAtOGgtMnYyaDJ2LTJ6bTQgNGgtMnYyaDJ2LTJ6bS00LTRoLTJ2Mmgydi0yem0tNCA0aC0ydjJoMnYtMnptOCAwaDJ2LTJoLTJ2MnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-40 dark:opacity-20"
+  ></div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+    <!-- Header with Icon -->
+    <div class="text-center mb-10 sm:mb-12 md:mb-16">
+      <!-- <div
+        class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-lg shadow-brand-500/30"
+        data-aos="zoom-in"
+        data-aos-duration="600"
+      >
+        <i class="fas fa-paper-plane text-2xl sm:text-3xl"></i>
+      </div> -->
+      <h2
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-brand-600 to-purple-600 dark:from-white dark:via-brand-400 dark:to-purple-400 bg-clip-text text-transparent mb-4 sm:mb-5 md:mb-6"
+        data-aos="fade-up"
+        data-aos-duration="600"
+      >
+        Let's Work Together
+      </h2>
+      <p
+        class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-2"
+        data-aos="fade-up"
+        data-aos-delay="100"
+        data-aos-duration="600"
+      >
+        I'm currently looking for new opportunities. Whether you need a
+        full-stack developer or have a project in mind,
+        <span class="font-semibold text-brand-600 dark:text-brand-400"
+          >let's connect!</span
+        >
+      </p>
+    </div>
+
+    <!-- Enhanced Contact Cards -->
+    <div
+      class="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-10 sm:mb-12 md:mb-16"
+    >
+      <!-- Email Card - Enhanced -->
+      <a
+        href="mailto:Kareem.apple1111@gmail.com"
+        class="group relative block p-6 sm:p-7 md:p-8 lg:p-10 bg-white dark:bg-dark-100 rounded-2xl md:rounded-3xl shadow-lg hover:shadow-2xl dark:shadow-brand-500/10 dark:hover:shadow-brand-500/30 transition-all duration-500 border border-gray-100 dark:border-dark-200 hover:border-brand-200 dark:hover:border-brand-500/50 overflow-hidden"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-duration="600"
+      >
+        <!-- Background Gradient on Hover -->
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
+
+        <!-- Content -->
+        <div class="relative z-10">
+          <div
+            class="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-brand-100 to-blue-100 dark:from-brand-500/20 dark:to-blue-500/20 text-brand-600 dark:text-brand-400 rounded-2xl md:rounded-3xl flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-5 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-brand-500/20"
+          >
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3
+            class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 text-center group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors"
+          >
+            Email Me
+          </h3>
+          <p
+            class="text-xs sm:text-sm md:text-base text-gray-500 dark:text-gray-400 text-center break-words px-2 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors"
+          >
+            Kareem.apple1111@gmail.com
+          </p>
+          
+          <!-- Animated Arrow -->
+          <div
+            class="absolute bottom-4 right-4 text-brand-500 dark:text-brand-400 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300"
+          >
+            <i class="fas fa-arrow-right text-xl"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Phone Card - Enhanced -->
+      <a
+        href="tel:01142391819"
+        class="group relative block p-6 sm:p-7 md:p-8 lg:p-10 bg-white dark:bg-dark-100 rounded-2xl md:rounded-3xl shadow-lg hover:shadow-2xl dark:shadow-green-500/10 dark:hover:shadow-green-500/30 transition-all duration-500 border border-gray-100 dark:border-dark-200 hover:border-green-200 dark:hover:border-green-500/50 overflow-hidden"
+        data-aos="fade-up"
+        data-aos-delay="300"
+        data-aos-duration="600"
+      >
+        <!-- Background Gradient on Hover -->
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
+
+        <!-- Content -->
+        <div class="relative z-10">
+          <div
+            class="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-500/20 dark:to-emerald-500/20 text-green-600 dark:text-green-400 rounded-2xl md:rounded-3xl flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-5 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-green-500/20"
+          >
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <h3
+            class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 text-center group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
+          >
+            Call Me
+          </h3>
+          <p
+            class="text-xs sm:text-sm md:text-base text-gray-500 dark:text-gray-400 text-center group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors font-medium"
+          >
+            01142391819
+          </p>
+          
+          <!-- Animated Arrow -->
+          <div
+            class="absolute bottom-4 right-4 text-green-500 dark:text-green-400 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300"
+          >
+            <i class="fas fa-arrow-right text-xl"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Enhanced Social Links -->
+    <div class="text-center" data-aos="fade-up" data-aos-delay="400" data-aos-duration="600">
+      <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-5 sm:mb-6 font-medium">
+        <i class="fas fa-share-alt text-brand-500 dark:text-brand-400 mr-2"></i>
+        Or connect with me on social media
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5">
+        <!-- GitHub -->
+        <a
+          href="https://github.com/KarimmAyman"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-100 dark:to-dark-200 flex items-center justify-center hover:from-gray-900 hover:to-gray-800 dark:hover:from-gray-100 dark:hover:to-gray-200 transition-all duration-300 text-xl sm:text-2xl md:text-3xl transform hover:scale-110 hover:-translate-y-1 active:scale-95 text-gray-700 dark:text-gray-300 hover:text-white dark:hover:text-gray-900 shadow-lg hover:shadow-2xl"
+          aria-label="GitHub"
+        >
+          <i class="fab fa-github relative z-10"></i>
+          <span
+            class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-900 to-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a
+          href="https://www.linkedin.com/in/karim-ayman-fawzy"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-dark-100 dark:to-dark-200 flex items-center justify-center hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-xl sm:text-2xl md:text-3xl transform hover:scale-110 hover:-translate-y-1 active:scale-95 text-blue-600 dark:text-blue-400 hover:text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/50"
+          aria-label="LinkedIn"
+        >
+          <i class="fab fa-linkedin-in relative z-10"></i>
+          <span
+            class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></span>
+        </a>
+
+        <!-- Instagram -->
+        <a
+          href="https://www.instagram.com/karrim_ayman/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-pink-100 to-purple-200 dark:from-dark-100 dark:to-dark-200 flex items-center justify-center hover:from-purple-600 hover:via-pink-600 hover:to-orange-500 transition-all duration-300 text-xl sm:text-2xl md:text-3xl transform hover:scale-110 hover:-translate-y-1 active:scale-95 text-pink-600 dark:text-pink-400 hover:text-white shadow-lg hover:shadow-2xl hover:shadow-pink-500/50"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram relative z-10"></i>
+          <span
+            class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></span>
+        </a>
+
+        <!-- Facebook -->
+        <a
+          href="https://www.facebook.com/kareem.elmoghier"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-dark-100 dark:to-dark-200 flex items-center justify-center hover:from-blue-600 hover:to-blue-800 transition-all duration-300 text-xl sm:text-2xl md:text-3xl transform hover:scale-110 hover:-translate-y-1 active:scale-95 text-blue-700 dark:text-blue-400 hover:text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/50"
+          aria-label="Facebook"
+        >
+          <i class="fab fa-facebook-f relative z-10"></i>
+          <span
+            class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Download CV Button -->
+    <div class="text-center mt-10 sm:mt-12 md:mt-14" data-aos="fade-up" data-aos-delay="500">
+      <a
+        href="https://drive.google.com/file/d/1hri2mCiwlIqBaxZ6AUbJSmT09mTT9D0c/view?usp=sharing"
+        download
+        class="inline-flex items-center gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-brand-500 to-purple-600 hover:from-brand-600 hover:to-purple-700 text-white font-bold rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-brand-500/50 transition-all duration-300 transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg group"
+      >
+        <i class="fas fa-download text-lg sm:text-xl group-hover:animate-bounce"></i>
+        <span>Download CV</span>
+        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+   <!-- Footer - ENHANCED FOR MOBILE -->
+    <footer
+      class="py-6 sm:py-8 md:py-10 bg-gray-50 dark:bg-dark-900 border-t border-gray-200 dark:border-dark-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center space-y-3 sm:space-y-4">
+          <!-- Main Copyright -->
+          <p
+            class="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium"
+          >
+            &copy; 2024
+            <span class="font-bold text-gray-900 dark:text-white"
+              >Karim Ayman</span
+            >. All rights reserved.
+          </p>
+
+          <!-- Tech Stack -->
+          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-500">
+            Designed with
+            <span class="text-brand-500 dark:text-brand-400 font-semibold"
+              >Tailwind CSS</span
+            >
+            &
+            <span class="text-brand-500 dark:text-brand-400 font-semibold"
+              >AOS</span
+            >
+          </p>
+
+          <!-- Quick Links -->
+          <div
+            class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 pt-2 sm:pt-3"
+          >
+            <a
+              href="#about"
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+            >
+              About
+            </a>
+            <span class="text-gray-300 dark:text-gray-700">|</span>
+            <a
+              href="#skills"
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+            >
+              Skills
+            </a>
+            <span class="text-gray-300 dark:text-gray-700">|</span>
+            <a
+              href="#projects"
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+            >
+              Projects
+            </a>
+            <span class="text-gray-300 dark:text-gray-700">|</span>
+            <a
+              href="#contact"
+              class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+            >
+              Contact
+            </a>
+          </div>
+
+          <!-- Social Icons in Footer -->
+          <div class="flex justify-center gap-3 sm:gap-4 pt-2 sm:pt-3">
+            <a
+              href="https://github.com/KarimmAyman"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gray-200 dark:bg-dark-100 flex items-center justify-center hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all text-sm sm:text-base transform hover:scale-110 active:scale-95 text-gray-600 dark:text-gray-400"
+              aria-label="GitHub"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/karim-ayman-fawzy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gray-200 dark:bg-dark-100 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-sm sm:text-base transform hover:scale-110 active:scale-95 text-gray-600 dark:text-gray-400"
+              aria-label="LinkedIn"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/karrim_ayman/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gray-200 dark:bg-dark-100 flex items-center justify-center hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-600 hover:text-white transition-all text-sm sm:text-base transform hover:scale-110 active:scale-95 text-gray-600 dark:text-gray-400"
+              aria-label="Instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              href="https://www.facebook.com/kareem.elmoghier"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gray-200 dark:bg-dark-100 flex items-center justify-center hover:bg-blue-700 hover:text-white transition-all text-sm sm:text-base transform hover:scale-110 active:scale-95 text-gray-600 dark:text-gray-400"
+              aria-label="Facebook"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+          </div>
+
+          <!-- Made with Love -->
+          <p class="text-xs text-gray-500 dark:text-gray-500 pt-2 sm:pt-3">
+            Made with <i class="fas fa-heart text-red-500 animate-pulse"></i> by
+            Karim Ayman
+          </p>
+        </div>
+      </div>
+    </footer>
+
+<!-- Scroll to Top Button (Fixed) -->
+<button
+  id="scrollToTop"
+  class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-brand-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-2xl hover:shadow-brand-500/50 flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300 opacity-0 invisible z-50"
+  aria-label="Scroll to top"
+>
+  <i class="fas fa-arrow-up text-lg sm:text-xl"></i>
+</button>
+<!-- Enhanced JavaScript for all interactions -->
+<script>
+  // ==============================================
+  // UTILITY FUNCTIONS
+  // ==============================================
+  
+  // Debounce function for performance optimization
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Throttle function for scroll events
+  function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
+
+  // ==============================================
+  // AOS INITIALIZATION
+  // ==============================================
+  
+  AOS.init({
+    duration: 600,
+    once: true,
+    offset: 50,
+    easing: "ease-out-cubic",
+    delay: 0,
+    anchorPlacement: 'top-bottom',
+    mobile: {
+      duration: 400,
+      offset: 30,
+    },
+    // Disable on specific elements if needed
+    disable: false,
+  });
+
+  // ==============================================
+  // THEME MANAGEMENT
+  // ==============================================
+  
+  class ThemeManager {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.updateThemeIcons();
+      this.setupEventListeners();
+      this.applySystemPreference();
+    }
+
+    toggle() {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      this.updateThemeIcons();
+      this.updateMetaThemeColor();
+      
+      // Add smooth transition effect
+      document.documentElement.style.transition = "background-color 0.3s ease";
+      setTimeout(() => {
+        document.documentElement.style.transition = "";
+      }, 300);
+    }
+
+    updateThemeIcons() {
+      const isDark = document.documentElement.classList.contains("dark");
+      
+      // Update desktop icons
+      this.updateIconSet("theme-toggle-dark-icon", "theme-toggle-light-icon", isDark);
+      
+      // Update mobile icons
+      this.updateIconSet("theme-toggle-dark-icon-mobile", "theme-toggle-light-icon-mobile", isDark);
+    }
+
+    updateIconSet(darkIconId, lightIconId, isDark) {
+      const darkIcon = document.getElementById(darkIconId);
+      const lightIcon = document.getElementById(lightIconId);
+      
+      if (darkIcon && lightIcon) {
+        if (isDark) {
+          darkIcon.classList.remove("hidden");
+          lightIcon.classList.add("hidden");
+        } else {
+          darkIcon.classList.add("hidden");
+          lightIcon.classList.remove("hidden");
+        }
+      }
+    }
+
+    updateMetaThemeColor() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const metaThemeColor = document.querySelector("meta[name=theme-color]");
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute("content", isDark ? "#030712" : "#06b6d4");
+      }
+    }
+
+    applySystemPreference() {
+      // Check for system preference if no saved preference exists
+      if (!localStorage.getItem("theme")) {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (prefersDark) {
+          document.documentElement.classList.add("dark");
+          this.updateThemeIcons();
+        }
+      }
+    }
+
+    setupEventListeners() {
+      // Desktop theme toggle
+      const desktopToggle = document.getElementById("theme-toggle");
+      if (desktopToggle) {
+        desktopToggle.addEventListener("click", () => this.toggle());
+      }
+
+      // Mobile theme toggle
+      const mobileToggle = document.getElementById("theme-toggle-mobile");
+      if (mobileToggle) {
+        mobileToggle.addEventListener("click", () => this.toggle());
+      }
+
+      // Listen for system theme changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+          if (e.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+          this.updateThemeIcons();
+        }
+      });
+    }
+  }
+
+  // ==============================================
+  // MOBILE MENU MANAGEMENT
+  // ==============================================
+  
+  class MobileMenuManager {
+    constructor() {
+      this.mobileMenuButton = document.getElementById("mobile-menu-button");
+      this.mobileMenu = document.getElementById("mobile-menu");
+      this.hamburger = document.querySelector(".hamburger");
+      this.menuBackdrop = document.getElementById("menu-backdrop");
+      this.init();
+    }
+
+    init() {
+      if (!this.mobileMenuButton || !this.mobileMenu || !this.hamburger || !this.menuBackdrop) {
+        return;
+      }
+
+      this.setupEventListeners();
+    }
+
+    open() {
+      this.mobileMenu.classList.remove("closed");
+      this.mobileMenu.classList.add("open");
+      this.hamburger.classList.add("active");
+      this.menuBackdrop.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      
+      // Trap focus within menu
+      this.trapFocus();
+    }
+
+    close() {
+      this.mobileMenu.classList.add("closed");
+      this.mobileMenu.classList.remove("open");
+      this.hamburger.classList.remove("active");
+      this.menuBackdrop.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    toggle() {
+      const isOpen = this.mobileMenu.classList.contains("open");
+      isOpen ? this.close() : this.open();
+    }
+
+    trapFocus() {
+      const focusableElements = this.mobileMenu.querySelectorAll(
+        'a[href], button, textarea, input, select'
+      );
+      const firstFocusable = focusableElements[0];
+      const lastFocusable = focusableElements[focusableElements.length - 1];
+
+      if (firstFocusable) {
+        firstFocusable.focus();
+      }
+
+      this.mobileMenu.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstFocusable) {
+              e.preventDefault();
+              lastFocusable.focus();
+            }
+          } else {
+            if (document.activeElement === lastFocusable) {
+              e.preventDefault();
+              firstFocusable.focus();
+            }
+          }
+        }
+      });
+    }
+
+    setupEventListeners() {
+      // Toggle button
+      this.mobileMenuButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.toggle();
+      });
+
+      // Backdrop click
+      this.menuBackdrop.addEventListener("click", () => this.close());
+
+      // Menu links
+      const mobileMenuLinks = document.querySelectorAll(".mobile-menu-link");
+      mobileMenuLinks.forEach((link) => {
+        link.addEventListener("click", () => this.close());
+      });
+
+      // Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && this.mobileMenu.classList.contains("open")) {
+          this.close();
+        }
+      });
+
+      // Close menu on resize to desktop
+      window.addEventListener("resize", debounce(() => {
+        if (window.innerWidth >= 768) {
+          this.close();
+        }
+      }, 250));
+    }
+  }
+
+  // ==============================================
+  // NAVBAR SCROLL EFFECTS
+  // ==============================================
+  
+  class NavbarManager {
+    constructor() {
+      this.navbar = document.querySelector("nav");
+      this.lastScroll = 0;
+      this.scrollThreshold = 100;
+      this.init();
+    }
+
+    init() {
+      if (!this.navbar) return;
+      
+      this.setupScrollEffect();
+      this.highlightActiveSection();
+    }
+
+    setupScrollEffect() {
+      const handleScroll = throttle(() => {
+        const currentScroll = window.pageYOffset;
+
+        // Add shadow when scrolled
+        if (currentScroll > 10) {
+          this.navbar.classList.add("scrolled");
+        } else {
+          this.navbar.classList.remove("scrolled");
+        }
+
+        // Hide/show navbar on scroll
+        if (currentScroll <= this.scrollThreshold) {
+          this.navbar.classList.remove("scroll-up", "scroll-down");
+          return;
+        }
+
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (mobileMenu && mobileMenu.classList.contains("open")) {
+          return;
+        }
+
+        if (currentScroll > this.lastScroll && !this.navbar.classList.contains("scroll-down")) {
+          this.navbar.classList.remove("scroll-up");
+          this.navbar.classList.add("scroll-down");
+        } else if (currentScroll < this.lastScroll && this.navbar.classList.contains("scroll-down")) {
+          this.navbar.classList.remove("scroll-down");
+          this.navbar.classList.add("scroll-up");
+        }
+
+        this.lastScroll = currentScroll;
+      }, 100);
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }
+
+    highlightActiveSection() {
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll("nav a[href^='#']");
+
+      const highlightNav = throttle(() => {
+        const scrollPosition = window.pageYOffset + 150;
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute("id");
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach((link) => {
+              link.classList.remove("active-link");
+              if (link.getAttribute("href") === `#${sectionId}`) {
+                link.classList.add("active-link");
+              }
+            });
+          }
+        });
+      }, 100);
+
+      window.addEventListener("scroll", highlightNav, { passive: true });
+    }
+  }
+
+  // ==============================================
+  // SMOOTH SCROLLING
+  // ==============================================
+  
+  class SmoothScrollManager {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", (e) => {
+          const targetId = anchor.getAttribute("href");
+          
+          // Skip if it's just "#"
+          if (targetId === "#" || targetId === "#!") {
+            e.preventDefault();
+            return;
+          }
+
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            this.scrollToElement(target);
+          }
+        });
+      });
+    }
+
+    scrollToElement(element) {
+      const navHeight = window.innerWidth < 768 ? 56 : 80;
+      const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
+    }
+  }
+
+  // ==============================================
+  // SCROLL TO TOP BUTTON
+  // ==============================================
+  
+  class ScrollToTopManager {
+    constructor() {
+      this.button = document.getElementById("scrollToTop");
+      this.showThreshold = 300;
+      this.init();
+    }
+
+    init() {
+      if (!this.button) return;
+
+      this.setupScrollListener();
+      this.setupClickListener();
+    }
+
+    setupScrollListener() {
+      const handleScroll = throttle(() => {
+        if (window.pageYOffset > this.showThreshold) {
+          this.show();
+        } else {
+          this.hide();
+        }
+      }, 100);
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }
+
+    setupClickListener() {
+      this.button.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    }
+
+    show() {
+      this.button.classList.remove("opacity-0", "invisible");
+      this.button.classList.add("opacity-100", "visible");
+    }
+
+    hide() {
+      this.button.classList.remove("opacity-100", "visible");
+      this.button.classList.add("opacity-0", "invisible");
+    }
+  }
+
+  // ==============================================
+  // SCROLL PROGRESS BAR (Optional Enhancement)
+  // ==============================================
+  
+  class ScrollProgressBar {
+    constructor() {
+      this.createProgressBar();
+      this.init();
+    }
+
+    createProgressBar() {
+      const progressBar = document.createElement("div");
+      progressBar.id = "scroll-progress";
+      progressBar.className = "fixed top-0 left-0 h-1 bg-gradient-to-r from-brand-500 via-purple-500 to-pink-500 z-[100] transition-all duration-150";
+      progressBar.style.width = "0%";
+      document.body.appendChild(progressBar);
+      this.progressBar = progressBar;
+    }
+
+    init() {
+      const updateProgress = throttle(() => {
+        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        this.progressBar.style.width = scrolled + "%";
+      }, 50);
+
+      window.addEventListener("scroll", updateProgress, { passive: true });
+    }
+  }
+
+  // ==============================================
+  // TYPING EFFECT (Optional Enhancement for Hero Section)
+  // ==============================================
+  
+  class TypingEffect {
+    constructor(element, words, typingSpeed = 100, deletingSpeed = 50, delay = 2000) {
+      this.element = element;
+      this.words = words;
+      this.typingSpeed = typingSpeed;
+      this.deletingSpeed = deletingSpeed;
+      this.delay = delay;
+      this.wordIndex = 0;
+      this.charIndex = 0;
+      this.isDeleting = false;
+      
+      if (this.element) {
+        this.type();
+      }
+    }
+
+    type() {
+      const currentWord = this.words[this.wordIndex];
+      
+      if (this.isDeleting) {
+        this.element.textContent = currentWord.substring(0, this.charIndex - 1);
+        this.charIndex--;
+      } else {
+        this.element.textContent = currentWord.substring(0, this.charIndex + 1);
+        this.charIndex++;
+      }
+
+      let typeSpeed = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+
+      if (!this.isDeleting && this.charIndex === currentWord.length) {
+        typeSpeed = this.delay;
+        this.isDeleting = true;
+      } else if (this.isDeleting && this.charIndex === 0) {
+        this.isDeleting = false;
+        this.wordIndex = (this.wordIndex + 1) % this.words.length;
+      }
+
+      setTimeout(() => this.type(), typeSpeed);
+    }
+  }
+
+  // ==============================================
+  // LAZY LOADING IMAGES (Optional Enhancement)
+  // ==============================================
+  
+  class LazyLoadManager {
+    constructor() {
+      this.images = document.querySelectorAll('img[data-src]');
+      this.init();
+    }
+
+    init() {
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.classList.remove('lazy');
+              imageObserver.unobserve(img);
+            }
+          });
+        });
+
+        this.images.forEach(img => imageObserver.observe(img));
+      } else {
+        // Fallback for browsers that don't support IntersectionObserver
+        this.images.forEach(img => {
+          img.src = img.dataset.src;
+        });
+      }
+    }
+  }
+
+  // ==============================================
+  // FORM VALIDATION (Optional Enhancement)
+  // ==============================================
+  
+  class FormValidator {
+    constructor(formId) {
+      this.form = document.getElementById(formId);
+      if (this.form) {
+        this.init();
+      }
+    }
+
+    init() {
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (this.validate()) {
+          this.submit();
+        }
+      });
+    }
+
+    validate() {
+      let isValid = true;
+      const inputs = this.form.querySelectorAll('input[required], textarea[required]');
+      
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          this.showError(input, 'This field is required');
+          isValid = false;
+        } else {
+          this.removeError(input);
+        }
+      });
+
+      return isValid;
+    }
+
+    showError(input, message) {
+      input.classList.add('border-red-500');
+      let error = input.nextElementSibling;
+      if (!error || !error.classList.contains('error-message')) {
+        error = document.createElement('span');
+        error.className = 'error-message text-red-500 text-sm mt-1';
+        input.parentNode.insertBefore(error, input.nextSibling);
+      }
+      error.textContent = message;
+    }
+
+    removeError(input) {
+      input.classList.remove('border-red-500');
+      const error = input.nextElementSibling;
+      if (error && error.classList.contains('error-message')) {
+        error.remove();
+      }
+    }
+
+    submit() {
+      // Handle form submission
+      console.log('Form submitted successfully');
+    }
+  }
+
+  // ==============================================
+  // PERFORMANCE OPTIMIZATION
+  // ==============================================
+  
+  class PerformanceOptimizer {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // Preload critical resources
+      this.preloadResources();
+      
+      // Reduce motion for users who prefer it
+      this.respectReducedMotion();
+      
+      // Add loading class removal
+      this.handlePageLoad();
+    }
+
+    preloadResources() {
+      // Preload hero image or critical assets
+      const heroImage = document.querySelector('.hero-image');
+      if (heroImage && heroImage.dataset.src) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = heroImage.dataset.src;
+        document.head.appendChild(link);
+      }
+    }
+
+    respectReducedMotion() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        document.documentElement.classList.add('reduce-motion');
+        // Disable AOS animations
+        AOS.init({ disable: true });
+      }
+    }
+
+    handlePageLoad() {
+      window.addEventListener("load", () => {
+        document.body.classList.add("loaded");
+        setTimeout(() => {
+          AOS.refresh();
+        }, 100);
+      });
+    }
+  }
+
+  // ==============================================
+  // INITIALIZE ALL MANAGERS
+  // ==============================================
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    try {
+      // Core functionality
+      const themeManager = new ThemeManager();
+      const mobileMenuManager = new MobileMenuManager();
+      const navbarManager = new NavbarManager();
+      const smoothScrollManager = new SmoothScrollManager();
+      const scrollToTopManager = new ScrollToTopManager();
+      
+      // Optional enhancements (comment out if not needed)
+      const scrollProgressBar = new ScrollProgressBar();
+      const performanceOptimizer = new PerformanceOptimizer();
+      const lazyLoadManager = new LazyLoadManager();
+      
+      // Optional: Typing effect for hero section
+      // const typingElement = document.querySelector('.typing-effect');
+      // if (typingElement) {
+      //   new TypingEffect(typingElement, ['Full-Stack Developer', 'React Specialist', '.NET Developer'], 100, 50, 2000);
+      // }
+      
+      // Optional: Form validation
+      // const contactForm = new FormValidator('contact-form');
+      
+      console.log('✅ All managers initialized successfully');
+    } catch (error) {
+      console.error('❌ Error initializing managers:', error);
+    }
+  });
+
+  // ==============================================
+  // GLOBAL ERROR HANDLER
+  // ==============================================
+  
+  window.addEventListener('error', function(e) {
+    console.error('Global error:', e.error);
+    // You can send this to an error tracking service
+  });
+
+  // ==============================================
+  // ACCESSIBILITY ENHANCEMENTS
+  // ==============================================
+  
+  // Skip to main content
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && !e.shiftKey && document.activeElement === document.body) {
+      const skipLink = document.querySelector('a[href="#main-content"]');
+      if (skipLink) {
+        skipLink.focus();
+      }
+    }
+  });
+
+  // Announce page changes to screen readers
+  const announceToScreenReader = (message) => {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+    
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  };
+
+  // ==============================================
+  // COOKIE CONSENT (Optional Enhancement)
+  // ==============================================
+  
+  class CookieConsent {
+    constructor() {
+      this.cookieName = 'site_cookie_consent';
+      this.init();
+    }
+
+    init() {
+      if (!this.hasConsent()) {
+        this.showBanner();
+      }
+    }
+
+    hasConsent() {
+      return localStorage.getItem(this.cookieName) === 'accepted';
+    }
+
+    showBanner() {
+      const banner = document.createElement('div');
+      banner.id = 'cookie-banner';
+      banner.className = 'fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-100 border-t-2 border-brand-500 p-4 sm:p-6 shadow-2xl z-50 transform translate-y-0 transition-transform duration-500';
+      banner.innerHTML = `
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-start gap-3">
+            <i class="fas fa-cookie-bite text-2xl text-brand-500"></i>
+            <p class="text-sm text-gray-600 dark:text-gray-300">
+              This website uses cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+            </p>
+          </div>
+          <div class="flex gap-3 flex-shrink-0">
+            <button id="cookie-accept" class="px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-lg font-semibold hover:from-brand-600 hover:to-purple-700 transition-all text-sm">
+              Accept
+            </button>
+            <button id="cookie-decline" class="px-4 py-2 bg-gray-200 dark:bg-dark-200 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-dark-300 transition-all text-sm">
+              Decline
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(banner);
+      
+      document.getElementById('cookie-accept').addEventListener('click', () => {
+        this.acceptCookies();
+        this.hideBanner(banner);
+      });
+      
+      document.getElementById('cookie-decline').addEventListener('click', () => {
+        this.hideBanner(banner);
+      });
+    }
+
+    acceptCookies() {
+      localStorage.setItem(this.cookieName, 'accepted');
+      announceToScreenReader('Cookie preferences saved');
+    }
+
+    hideBanner(banner) {
+      banner.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        if (banner.parentNode) {
+          banner.parentNode.removeChild(banner);
+        }
+      }, 500);
+    }
+  }
+
+  // ==============================================
+  // CONTACT FORM HANDLER (Enhanced)
+  // ==============================================
+  
+  class ContactFormHandler {
+    constructor() {
+      this.emailLink = document.querySelector('a[href^="mailto:"]');
+      this.phoneLink = document.querySelector('a[href^="tel:"]');
+      this.init();
+    }
+
+    init() {
+      if (this.emailLink) {
+        this.emailLink.addEventListener('click', () => {
+          announceToScreenReader('Opening email client');
+          this.trackEvent('Contact', 'Email Click');
+        });
+      }
+
+      if (this.phoneLink) {
+        this.phoneLink.addEventListener('click', () => {
+          announceToScreenReader('Initiating phone call');
+          this.trackEvent('Contact', 'Phone Click');
+        });
+      }
+
+      // Track social media clicks
+      const socialLinks = document.querySelectorAll('a[target="_blank"]');
+      socialLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const platform = this.getSocialPlatform(link.href);
+          if (platform) {
+            this.trackEvent('Social Media', `${platform} Click`);
+          }
+        });
+      });
+    }
+
+    getSocialPlatform(url) {
+      if (url.includes('github.com')) return 'GitHub';
+      if (url.includes('linkedin.com')) return 'LinkedIn';
+      if (url.includes('instagram.com')) return 'Instagram';
+      if (url.includes('facebook.com')) return 'Facebook';
+      return null;
+    }
+
+    trackEvent(category, action) {
+      // Google Analytics or other tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', action, {
+          'event_category': category
+        });
+      }
+      console.log(`📊 Event tracked: ${category} - ${action}`);
+    }
+  }
+
+  // ==============================================
+  // EASTER EGG / FUN FEATURES (Optional)
+  // ==============================================
+  
+  class EasterEggs {
+    constructor() {
+      this.konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      this.konamiIndex = 0;
+      this.init();
+    }
+
+    init() {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === this.konamiCode[this.konamiIndex]) {
+          this.konamiIndex++;
+          if (this.konamiIndex === this.konamiCode.length) {
+            this.activateKonamiCode();
+            this.konamiIndex = 0;
+          }
+        } else {
+          this.konamiIndex = 0;
+        }
+      });
+
+      // Console message
+      this.consoleMessage();
+    }
+
+    activateKonamiCode() {
+      document.body.style.transition = 'transform 0.5s';
+      document.body.style.transform = 'rotate(360deg)';
+      
+      setTimeout(() => {
+        document.body.style.transform = '';
+      }, 500);
+      
+      console.log('🎮 Konami Code activated! You found the easter egg!');
+      announceToScreenReader('Easter egg activated!');
+    }
+
+    consoleMessage() {
+      const styles = [
+        'color: #06b6d4',
+        'font-size: 20px',
+        'font-weight: bold',
+        'text-shadow: 2px 2px 4px rgba(0,0,0,0.2)'
+      ].join(';');
+
+      console.log('%c👋 Hello, fellow developer!', styles);
+      console.log('%cThanks for checking out the console! 🚀', 'color: #8b5cf6; font-size: 14px;');
+      console.log('%cLike what you see? Let\'s connect!', 'color: #10b981; font-size: 14px;');
+      console.log('%c📧 Kareem.apple1111@gmail.com', 'color: #3b82f6; font-size: 12px;');
+    }
+  }
+
+  // ==============================================
+  // NETWORK STATUS INDICATOR
+  // ==============================================
+  
+  class NetworkStatus {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      window.addEventListener('online', () => {
+        this.showNotification('Back online! 🌐', 'success');
+      });
+
+      window.addEventListener('offline', () => {
+        this.showNotification('No internet connection 📵', 'error');
+      });
+    }
+
+    showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `fixed top-20 right-4 sm:right-6 px-4 sm:px-6 py-3 sm:py-4 rounded-xl shadow-2xl z-50 transform translate-x-0 transition-all duration-500 text-sm sm:text-base font-semibold ${
+        type === 'success' ? 'bg-green-500 text-white' :
+        type === 'error' ? 'bg-red-500 text-white' :
+        'bg-blue-500 text-white'
+      }`;
+      notification.innerHTML = `
+        <div class="flex items-center gap-3">
+          <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+          <span>${message}</span>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(150%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+    }
+  }
+
+  // ==============================================
+  // PRINT STYLES HANDLER
+  // ==============================================
+  
+  window.addEventListener('beforeprint', () => {
+    // Expand all collapsed sections before printing
+    document.querySelectorAll('details').forEach(detail => {
+      detail.setAttribute('open', '');
+    });
+  });
+
+  // ==============================================
+  // COPY TO CLIPBOARD FUNCTIONALITY
+  // ==============================================
+  
+  function copyToClipboard(text, element) {
+    navigator.clipboard.writeText(text).then(() => {
+      // Show success feedback
+      const originalHTML = element.innerHTML;
+      element.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      element.classList.add('bg-green-500');
+      
+      setTimeout(() => {
+        element.innerHTML = originalHTML;
+        element.classList.remove('bg-green-500');
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  }
+
+  // Add copy buttons to code blocks if any
+  document.querySelectorAll('pre code').forEach(block => {
+    const button = document.createElement('button');
+    button.className = 'absolute top-2 right-2 px-3 py-1 bg-gray-700 text-white text-xs rounded hover:bg-gray-600 transition-colors';
+    button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+    button.addEventListener('click', () => {
+      copyToClipboard(block.textContent, button);
+    });
+    
+    const wrapper = block.parentElement;
+    wrapper.style.position = 'relative';
+    wrapper.appendChild(button);
+  });
+
+  // ==============================================
+  // VIEWPORT HEIGHT FIX FOR MOBILE
+  // ==============================================
+  
+  function setVH() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  setVH();
+  window.addEventListener('resize', debounce(setVH, 250));
+  window.addEventListener('orientationchange', setVH);
+
+  // ==============================================
+  // INITIALIZE OPTIONAL FEATURES
+  // ==============================================
+  
+  // Uncomment the features you want to use
+  setTimeout(() => {
+    // new CookieConsent(); // Uncomment if you want cookie consent
+    new ContactFormHandler();
+    new NetworkStatus();
+    // new EasterEggs(); // Uncomment for fun features
+  }, 1000);
+
+  // ==============================================
+  // SERVICE WORKER REGISTRATION (PWA Support)
+  // ==============================================
+  
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      // Uncomment to enable PWA
+      // navigator.serviceWorker.register('/sw.js')
+      //   .then(registration => {
+      //     console.log('✅ Service Worker registered:', registration);
+      //   })
+      //   .catch(error => {
+      //     console.log('❌ Service Worker registration failed:', error);
+      //   });
+    });
+  }
+
+  // ==============================================
+  // CONSOLE WARNINGS
+  // ==============================================
+  
+  if (process.env.NODE_ENV === 'production') {
+    console.warn(
+      '%c⚠️ WARNING!',
+      'color: red; font-size: 40px; font-weight: bold;'
+    );
+    console.warn(
+      '%cUsing this console may allow attackers to impersonate you and steal your information using Self-XSS attacks. Do not enter or paste code that you don\'t understand.',
+      'font-size: 16px;'
+    );
+  }
+
+  // ==============================================
+  // ANALYTICS INITIALIZATION (Optional)
+  // ==============================================
+  
+  // Google Analytics
+  // window.dataLayer = window.dataLayer || [];
+  // function gtag(){dataLayer.push(arguments);}
+  // gtag('js', new Date());
+  // gtag('config', 'YOUR-GA-ID');
+
+  // ==============================================
+  // EXPORT FOR TESTING (Optional)
+  // ==============================================
+  
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      ThemeManager,
+      MobileMenuManager,
+      NavbarManager,
+      SmoothScrollManager,
+      ScrollToTopManager,
+      debounce,
+      throttle
+    };
+  }
+
+  // ==============================================
+  // DEVELOPMENT HELPERS
+  // ==============================================
+  
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    console.log('%c🛠️ Development Mode Active', 'color: orange; font-size: 16px; font-weight: bold;');
+    
+    // Add grid overlay for development (toggle with Ctrl+G)
+    let gridVisible = false;
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'g') {
+        e.preventDefault();
+        gridVisible = !gridVisible;
+        
+        let grid = document.getElementById('dev-grid');
+        if (!grid) {
+          grid = document.createElement('div');
+          grid.id = 'dev-grid';
+          grid.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+              linear-gradient(rgba(255,0,0,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+          `;
+          document.body.appendChild(grid);
+        }
+        
+        grid.style.display = gridVisible ? 'block' : 'none';
+        console.log(`Grid overlay: ${gridVisible ? 'ON' : 'OFF'}`);
+      }
+    });
+  }
+
+  // ==============================================
+  // FINAL INITIALIZATION MESSAGE
+  // ==============================================
+  
+  console.log(
+    '%c✨ Portfolio Loaded Successfully!',
+    'color: #06b6d4; font-size: 16px; font-weight: bold; background: #0f172a; padding: 10px; border-radius: 5px;'
+  );
+  console.log('Made with ❤️ by Karim Ayman');
+</script>
+  </body>
+</html>
