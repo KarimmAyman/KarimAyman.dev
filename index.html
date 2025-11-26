@@ -10,7 +10,8 @@
     <title>Karim Ayman | Full Stack Developer</title>
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="./dist/output.css" />
 
     <!-- Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
@@ -27,37 +28,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-            },
-            colors: {
-              brand: {
-                50: "#ecfeff",
-                100: "#cffafe",
-                400: "#22d3ee",
-                500: "#06b6d4",
-                600: "#0891b2",
-                700: "#0e7490",
-              },
-              dark: {
-                50: "#18181b",
-                100: "#27272a",
-                200: "#3f3f46",
-                300: "#52525b",
-                800: "#09090b",
-                900: "#030712",
-              },
-            },
-          },
-        },
-      };
-    </script>
 
     <style>
       /* Smooth font rendering */
@@ -258,7 +228,9 @@
     </style>
 
     <!-- Theme initialization script -->
+    <!-- Theme initialization script -->
     <script>
+      // Initialize theme
       if (!("theme" in localStorage)) {
         localStorage.setItem("theme", "dark");
       }
@@ -267,6 +239,50 @@
         document.documentElement.classList.add("dark");
       } else {
         document.documentElement.classList.remove("dark");
+      }
+
+      // Initialize theme icons immediately
+      function initThemeIcons() {
+        const isDark = document.documentElement.classList.contains("dark");
+
+        // Desktop icons
+        const darkIconDesktop = document.getElementById(
+          "theme-toggle-dark-icon"
+        );
+        const lightIconDesktop = document.getElementById(
+          "theme-toggle-light-icon"
+        );
+
+        if (isDark) {
+          if (darkIconDesktop) darkIconDesktop.classList.remove("hidden");
+          if (lightIconDesktop) lightIconDesktop.classList.add("hidden");
+        } else {
+          if (darkIconDesktop) darkIconDesktop.classList.add("hidden");
+          if (lightIconDesktop) lightIconDesktop.classList.remove("hidden");
+        }
+
+        // Mobile icons
+        const darkIconMobile = document.getElementById(
+          "theme-toggle-dark-icon-mobile"
+        );
+        const lightIconMobile = document.getElementById(
+          "theme-toggle-light-icon-mobile"
+        );
+
+        if (isDark) {
+          if (darkIconMobile) darkIconMobile.classList.remove("hidden");
+          if (lightIconMobile) lightIconMobile.classList.add("hidden");
+        } else {
+          if (darkIconMobile) darkIconMobile.classList.add("hidden");
+          if (lightIconMobile) lightIconMobile.classList.remove("hidden");
+        }
+      }
+
+      // Run when DOM is ready
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initThemeIcons);
+      } else {
+        initThemeIcons();
       }
     </script>
   </head>
@@ -317,6 +333,7 @@
             >
 
             <!-- Theme Toggle Desktop -->
+            <!-- Theme Toggle Desktop -->
             <button
               id="theme-toggle"
               type="button"
@@ -325,14 +342,15 @@
             >
               <i
                 id="theme-toggle-light-icon"
-                class="fas fa-moon hidden text-base"
+                class="fas fa-moon text-base"
+                style="display: none"
               ></i>
               <i
                 id="theme-toggle-dark-icon"
-                class="fas fa-sun hidden text-base"
+                class="fas fa-sun text-base"
+                style="display: none"
               ></i>
             </button>
-
             <a
               href="#contact"
               class="px-5 lg:px-6 py-2.5 bg-gradient-to-r from-brand-500 to-brand-600 text-white text-sm lg:text-base font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-lg shadow-brand-500/30 dark:shadow-brand-500/50 hover:shadow-brand-500/40"
@@ -343,6 +361,8 @@
           <!-- Mobile Controls -->
           <div class="flex md:hidden items-center gap-2">
             <!-- Theme Toggle Mobile -->
+            <!-- Theme Toggle Mobile -->
+            <!-- Theme Toggle Mobile -->
             <button
               id="theme-toggle-mobile"
               type="button"
@@ -351,11 +371,13 @@
             >
               <i
                 id="theme-toggle-light-icon-mobile"
-                class="fas fa-moon hidden text-base"
+                class="fas fa-moon text-base"
+                style="display: none"
               ></i>
               <i
                 id="theme-toggle-dark-icon-mobile"
-                class="fas fa-sun hidden text-base"
+                class="fas fa-sun text-base"
+                style="display: none"
               ></i>
             </button>
 
@@ -3062,11 +3084,11 @@
 
           if (darkIcon && lightIcon) {
             if (isDark) {
-              darkIcon.classList.remove("hidden");
-              lightIcon.classList.add("hidden");
+              darkIcon.style.display = "inline-block";
+              lightIcon.style.display = "none";
             } else {
-              darkIcon.classList.add("hidden");
-              lightIcon.classList.remove("hidden");
+              darkIcon.style.display = "none";
+              lightIcon.style.display = "inline-block";
             }
           }
         }

@@ -1,0 +1,24 @@
+{
+  "name": "portfolyo",
+  "version": "1.0.0",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "dev": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarimmAyman/KarimAyman.dev.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KarimmAyman/KarimAyman.dev/issues"
+  },
+  "homepage": "https://github.com/KarimmAyman/KarimAyman.dev#readme",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
