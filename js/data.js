@@ -12,7 +12,7 @@ export const PORTFOLIO = {
     email:            "Kareem.apple1111@gmail.com",
     phone:            "01142391819",
     location:         "Mansoura, Egypt",
-    cvUrl:            "https://drive.google.com/file/d/1hri2mCiwlIqBaxZ6AUbJSmT09mTT9D0c/view?usp=sharing",
+    cvUrl:            "https://drive.google.com/drive/folders/116D1ChyeWawX3--9KNdXaYFP5CFX0abt?usp=sharing",
     availableForHire: true,
     profileImage:     "./images/MyPecs-800.webp",
     copyrightYear:    new Date().getFullYear(),
