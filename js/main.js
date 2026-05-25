@@ -1,5 +1,5 @@
-import { PORTFOLIO } from './data.js?v=1.4';
-import { CONFIG } from './config.js?v=1.4';
+import { PORTFOLIO } from './data.js?v=1.5';
+import { CONFIG } from './config.js?v=1.5';
 
 // Global error overlay for developer experience
 window.addEventListener('error', (e) => {
@@ -115,11 +115,11 @@ Promise.all(renderPromises).then((sections) => {
   Object.keys(CONFIG.features).forEach(f => {
     if (CONFIG.features[f]) {
       const p = f === 'scrollProgress' ? 'scrollProgress.js' : f === 'scrollToTop' ? 'scrollToTop.js' : f === 'lazyVideos' ? 'lazyVideo.js' : 'theme.js';
-      import(`./managers/${p}?v=1.4`);
+      import(`./managers/${p}?v=1.5`);
     }
   });
-  import("./managers/navbar.js?v=1.4");
-  import("./managers/mobileMenu.js?v=1.4");
+  import("./managers/navbar.js?v=1.5");
+  import("./managers/mobileMenu.js?v=1.5");
 });
 
 document.getElementById('footer-year').textContent = PORTFOLIO.meta.copyrightYear;
