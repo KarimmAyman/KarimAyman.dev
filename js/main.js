@@ -112,10 +112,18 @@ Promise.all(renderPromises).then((sections) => {
   });
 
   if (window.AOS) window.AOS.init({ duration: 800, once: true, offset: 80 });
-  Object.keys(CONFIG.features).forEach(f => {
-    if (CONFIG.features[f]) {
-      const p = f === 'scrollProgress' ? 'scrollProgress.js' : f === 'scrollToTop' ? 'scrollToTop.js' : f === 'lazyVideos' ? 'lazyVideo.js' : 'theme.js';
-      import(`./managers/${p}?v=1.5`);
+  // AFTER (explicit, safe map)
+  const featureModules = {
+    scrollProgress: 'scrollProgress.js',
+    scrollToTop: 'scrollToTop.js',
+    lazyVideos: 'lazyVideo.js',
+    themeToggle: 'theme.js',
+  };
+  Object.entries(CONFIG.features).forEach(([f, enabled]) => {
+    if (enabled && featureModules[f]) {
+      import(`./managers/${featureModules[f]}?v=1.5`).catch(err =>
+        console.error(`Failed to load manager for "${f}":`, err)
+      );
     }
   });
   import("./managers/navbar.js?v=1.5");
