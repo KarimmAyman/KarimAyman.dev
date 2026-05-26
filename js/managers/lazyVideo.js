@@ -240,28 +240,70 @@ export class LazyVideoLoader {
 }
 
 // Global functions to bind to events
-// Videos load ONLY on explicit user click — no auto-preloading
+function preloadVideosOnInteraction() {
+  let hasInteracted = false;
+
+  const preloadFirstVideo = () => {
+    if (!hasInteracted && window.lazyVideoLoader) {
+      hasInteracted = true;
+      const firstVideoContainer =
+        document.querySelector(".video-container");
+      if (firstVideoContainer) {
+        setTimeout(() => {
+          const parentId = firstVideoContainer.parentElement.id;
+          if (parentId) {
+            window.lazyVideoLoader.preloadVideo(parentId);
+          }
+        }, 1000);
+      }
+    }
+  };
+
+  // Preload on first user interaction
+  ["click", "scroll", "keydown", "touchstart"].forEach((event) => {
+    document.addEventListener(event, preloadFirstVideo, {
+      once: true,
+      passive: true,
+    });
+  });
+}
 
 function setupVideoIntersectionObserver() {
   if (!("IntersectionObserver" in window)) {
     return;
   }
 
-  // Only used for the fade-in animation — no preloading triggered here
   const videoObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
+        const container = entry.target;
+
         if (entry.isIntersecting) {
-          entry.target.classList.add("animate-fade-in");
+          // Add a subtle animation when video comes into view
+          container.classList.add("animate-fade-in");
+
+          // Optional: Preload video when it's 50% visible
+          if (entry.intersectionRatio > 0.5) {
+            const containerId = container.parentElement.id;
+            if (window.lazyVideoLoader && containerId) {
+              setTimeout(() => {
+                // Only preload if user has shown interest by hovering or focusing
+                if (container.matches(":hover, :focus-within")) {
+                  window.lazyVideoLoader.preloadVideo(containerId);
+                }
+              }, 500);
+            }
+          }
         }
       });
     },
     {
-      rootMargin: "0px",
-      threshold: 0.1,
+      rootMargin: "50px",
+      threshold: [0.1, 0.5],
     }
   );
 
+  // Observe all video containers
   document.querySelectorAll(".video-container").forEach((container) => {
     videoObserver.observe(container);
   });
@@ -412,26 +454,81 @@ function setupVideoErrorRecovery() {
   );
 }
 
-// Removed: setupIntelligentPreloading — was auto-downloading all video files
-// Videos now load strictly on user click only
+function setupIntelligentPreloading() {
+  let preloadQueue = [];
+  let isPreloading = false;
+
+  const containers = document.querySelectorAll(".video-container");
+  containers.forEach((container) => {
+    const containerId = container.parentElement.id;
+    if (containerId) {
+      preloadQueue.push(containerId);
+    }
+  });
+
+  async function preloadNext() {
+    if (isPreloading || preloadQueue.length === 0) return;
+
+    isPreloading = true;
+    const nextId = preloadQueue.shift();
+
+    if (window.lazyVideoLoader && nextId) {
+      try {
+        window.lazyVideoLoader.preloadVideo(nextId);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      } catch (error) {
+        console.error("Preload error:", error);
+      }
+    }
+
+    isPreloading = false;
+
+    if (preloadQueue.length > 0) {
+      setTimeout(preloadNext, 1000);
+    }
+  }
+
+  let hasStartedPreloading = false;
+  ["scroll", "click", "touchstart"].forEach((event) => {
+    document.addEventListener(
+      event,
+      () => {
+        if (!hasStartedPreloading) {
+          hasStartedPreloading = true;
+          setTimeout(preloadNext, 5000);
+        }
+      },
+      { once: true, passive: true }
+    );
+  });
+}
 
 // Self-initialize lazy video loader and bind enhancements
 function initAllVideoEnhancements() {
   window.lazyVideoLoader = new LazyVideoLoader();
-  // No auto-preloading — videos load ONLY on explicit user click
-  setupVideoIntersectionObserver();   // fade-in animation only
-  enhanceVideoKeyboardNavigation();   // keyboard shortcuts after load
-  setupVideoAnalytics();              // gtag events on click
-  optimizeVideoForConnection();       // connection quality logging
-  enhanceVideoFullscreen();           // fullscreen change handler
-  setupVideoErrorRecovery();          // auto-retry on error
+  preloadVideosOnInteraction();
+  setupVideoIntersectionObserver();
+  enhanceVideoKeyboardNavigation();
+  setupVideoAnalytics();
+  optimizeVideoForConnection();
+  enhanceVideoFullscreen();
+  setupVideoErrorRecovery();
+  setupIntelligentPreloading();
 
-  // Export for external use (manual preload still available if needed)
+  // Export for external use
   window.VideoManager = {
     getStats: () =>
       window.lazyVideoLoader?.getStats() || { loaded: 0, loading: 0, total: 0 },
     preloadVideo: (containerId) =>
       window.lazyVideoLoader?.preloadVideo(containerId),
+    preloadAll: () => {
+      document.querySelectorAll(".video-container").forEach((container) => {
+        const containerId = container.parentElement.id;
+        if (containerId) {
+          window.lazyVideoLoader?.preloadVideo(containerId);
+        }
+      });
+    },
   };
 }
 
