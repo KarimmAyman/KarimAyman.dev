@@ -1,541 +1,196 @@
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
+// lazy-video.js — optimised rewrite
 
-function throttle(func, limit) {
-  let inThrottle;
-  return function (...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
+const setOverlay = (overlay, type) => {
+  const map = {
+    loading: `<div class="ov-ring"></div><p>Loading video…</p>`,
+    play: `<div class="ov-btn"><i class="fas fa-play"></i></div>`,
+    replay: `<div class="ov-btn"><i class="fas fa-play"></i></div><p>Click to replay</p>`,
+    error: `<div class="ov-err"><i class="fas fa-exclamation-triangle"></i></div>
+              <p>Failed to load video</p><p class="sub">Please try again later</p>`,
+    retry: `<div class="ov-warn"><i class="fas fa-redo"></i></div><p>Retrying…</p>`,
   };
-}
+  overlay.innerHTML = map[type] ?? '';
+  overlay.style.display = type === 'hide' ? 'none' : 'flex';
+};
 
 export class LazyVideoLoader {
   constructor() {
-    this.loadedVideos = new Set();
-    this.loadingVideos = new Set();
-    this.init();
+    // WeakSets: containers are GC'd if removed from DOM
+    this.loaded = new WeakSet();
+    this.loading = new WeakSet();
+    this.aborts = new WeakMap(); // container → AbortController
+    this._init();
   }
 
-  init() {
-    // Add click event listeners to all video containers
-    document.querySelectorAll(".video-container").forEach((container) => {
-      container.addEventListener("click", (e) =>
-        this.handleVideoClick(e, container)
-      );
+  _init() {
+    document.querySelectorAll('.video-container').forEach(c => {
+      c.setAttribute('tabindex', '0');
+      c.setAttribute('role', 'button');
+      c.setAttribute('aria-label', 'Click to load and play video');
 
-      // Add keyboard accessibility
-      container.setAttribute("tabindex", "0");
-      container.setAttribute("role", "button");
-      container.setAttribute(
-        "aria-label",
-        "Click to load and play video"
-      );
-
-      container.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
+      // Single listener handles both click and keyboard — no duplication
+      c.addEventListener('click', e => this._handleClick(e, c));
+      c.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          this.handleVideoClick(e, container);
+          this._handleClick(e, c);
         }
+        this._handleVideoKeys(e, c);  // merged here, not in a 2nd querySelectorAll loop
       });
     });
   }
 
-  handleVideoClick(event, container) {
-    event.preventDefault();
-    event.stopPropagation();
+  _handleClick(e, c) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (this.loading.has(c)) return;
 
-    // Check if video is already loaded
-    if (this.loadedVideos.has(container)) {
-      const video = container.querySelector("video");
-      if (video) {
-        if (video.paused) {
-          video
-            .play()
-            .catch((error) => console.log("Playback failed:", error));
-        } else {
-          video.pause();
-        }
-      }
+    if (this.loaded.has(c)) {
+      const v = c.querySelector('video');
+      if (v) v.paused ? v.play().catch(() => { }) : v.pause();
       return;
     }
-
-    // Check if video is currently loading
-    if (this.loadingVideos.has(container)) {
-      return;
-    }
-
-    this.loadVideo(container);
+    this._load(c);
   }
 
-  loadVideo(container) {
-    const videoSrc = container.dataset.videoSrc;
-    const placeholder = container.querySelector(".video-placeholder");
-    const playOverlay = container.querySelector(".play-overlay");
+  _handleVideoKeys(e, c) {
+    if (!this.loaded.has(c)) return;
+    const v = c.querySelector('video');
+    if (!v) return;
+    const actions = {
+      k: () => v.paused ? v.play() : v.pause(),
+      ' ': () => v.paused ? v.play() : v.pause(),
+      ArrowLeft: () => { v.currentTime = Math.max(0, v.currentTime - 10); },
+      ArrowRight: () => { v.currentTime = Math.min(v.duration, v.currentTime + 10); },
+      ArrowUp: () => { v.volume = Math.min(1, v.volume + 0.1); },
+      ArrowDown: () => { v.volume = Math.max(0, v.volume - 0.1); },
+      m: () => { v.muted = !v.muted; },
+      f: () => v.requestFullscreen?.(),
+    };
+    if (actions[e.key]) { e.preventDefault(); actions[e.key](); }
+  }
 
-    if (!videoSrc || !placeholder) {
-      console.error("Missing video source or placeholder");
-      return;
-    }
+  _load(c) {
+    const src = c.dataset.videoSrc;
+    const placeholder = c.querySelector('.video-placeholder');
+    const overlay = c.querySelector('.play-overlay');
+    if (!src || !placeholder) { console.error('Missing video source or placeholder'); return; }
 
-    // Mark as loading
-    this.loadingVideos.add(container);
+    // Cancel any in-flight load for this container before starting a new one
+    this.aborts.get(c)?.abort();
+    const ac = new AbortController();
+    this.aborts.set(c, ac);
 
-    // Show loading state
-    this.showLoadingState(playOverlay);
+    this.loading.add(c);
+    setOverlay(overlay, 'loading');
 
-    // Create video element with optimized settings
-    const video = document.createElement("video");
-    video.controls = true;
-    video.preload = "metadata";
-    video.playsInline = true;
-    video.className =
-      "absolute top-0 left-0 w-full h-full object-contain";
-    video.setAttribute("controlsList", "nodownload");
-    video.setAttribute("disablePictureInPicture", "");
+    const video = Object.assign(document.createElement('video'), {
+      controls: true, preload: 'metadata', playsInline: true,
+      className: 'absolute top-0 left-0 w-full h-full object-contain',
+    });
+    video.setAttribute('controlsList', 'nodownload');
+    video.setAttribute('disablePictureInPicture', '');
+    video.innerHTML = `<source src="${src}" type="video/mp4">
+      Your browser does not support the video tag.`;
 
-    // Create source element
-    const source = document.createElement("source");
-    source.src = videoSrc;
-    source.type = "video/mp4";
+    const on = (evt, fn) => video.addEventListener(evt, fn, { signal: ac.signal });
 
-    video.appendChild(source);
-
-    // Add fallback text
-    video.appendChild(
-      document.createTextNode(
-        "Your browser does not support the video tag."
-      )
-    );
-
-    // Handle video events
-    video.addEventListener("loadedmetadata", () => {
-      this.hideLoadingState(playOverlay);
+    on('loadedmetadata', () => {
+      if (ac.signal.aborted) return;
+      setOverlay(overlay, 'hide');
       placeholder.appendChild(video);
-      this.loadedVideos.add(container);
-      this.loadingVideos.delete(container);
-
-      // Update accessibility
-      container.setAttribute(
-        "aria-label",
-        "Video loaded. Click to play/pause"
-      );
-
-      // Auto-play after loading with error handling
-      video.play().catch((error) => {
-        console.log("Autoplay prevented by browser policy:", error);
-        this.showPlayButton(playOverlay, true);
-      });
+      this.loaded.add(c);
+      this.loading.delete(c);  // WeakSet.delete is a no-op if absent — safe
+      c.setAttribute('aria-label', 'Video loaded. Click to play/pause');
+      video.play().catch(() => setOverlay(overlay, 'play'));
     });
+    on('error', () => { setOverlay(overlay, 'error'); this.loading.delete(c); });
+    on('play', () => setOverlay(overlay, 'hide'));
+    on('pause', () => setOverlay(overlay, 'replay'));
+    on('ended', () => setOverlay(overlay, 'replay'));
 
-    video.addEventListener("error", (e) => {
-      console.error("Video loading error:", e);
-      this.showErrorState(playOverlay);
-      this.loadingVideos.delete(container);
-    });
-
-    video.addEventListener("loadstart", () => {
-      console.log("Video loading started:", videoSrc);
-    });
-
-    // Add play/pause event listeners for better UX
-    video.addEventListener("play", () => {
-      playOverlay.style.display = "none";
-    });
-
-    video.addEventListener("pause", () => {
-      this.showPlayButton(playOverlay, true);
-    });
-
-    video.addEventListener("ended", () => {
-      this.showPlayButton(playOverlay, true);
-    });
-
-    // Start loading
     video.load();
   }
 
-  showLoadingState(overlay) {
-    overlay.innerHTML = `
-      <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center">
-        <div class="w-6 h-6 sm:w-8 sm:h-8 border-3 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
-      </div>
-      <p class="text-white text-sm mt-3 font-medium">Loading video...</p>
-    `;
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
+  // Public API
+  preload(id) {
+    const root = document.getElementById(id);
+    const c = root?.classList.contains('video-container')
+      ? root : root?.querySelector('.video-container');
+    if (c && !this.loaded.has(c) && !this.loading.has(c)) this._load(c);
   }
 
-  hideLoadingState(overlay) {
-    overlay.style.display = "none";
-  }
-
-  showPlayButton(overlay, isReplay = false) {
-    overlay.innerHTML = `
-      <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all duration-300 transform hover:scale-110">
-        <i class="fas fa-play text-gray-900 text-xl sm:text-2xl ml-1"></i>
-      </div>
-      ${
-        isReplay ? '<p class="text-white text-xs mt-2">Click to replay</p>' : ""
-      }
-    `;
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-  }
-
-  showErrorState(overlay) {
-    overlay.innerHTML = `
-      <div class="w-16 h-16 sm:w-20 sm:h-20 bg-red-100 rounded-full flex items-center justify-center">
-        <i class="fas fa-exclamation-triangle text-red-600 text-xl sm:text-2xl"></i>
-      </div>
-      <p class="text-white text-sm mt-3 font-medium">Failed to load video</p>
-      <p class="text-white/80 text-xs mt-1">Please try again later</p>
-    `;
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-  }
-
-  // Public method to preload specific videos
-  preloadVideo(containerId) {
-    const container = document.getElementById(containerId);
-    // Handle container or container child lookup
-    let targetContainer = container;
-    if (container && !container.classList.contains("video-container")) {
-      targetContainer = container.querySelector(".video-container");
-    }
-    if (
-      targetContainer &&
-      !this.loadedVideos.has(targetContainer) &&
-      !this.loadingVideos.has(targetContainer)
-    ) {
-      this.loadVideo(targetContainer);
-    }
-  }
-
-  // Public method to get loading stats
   getStats() {
-    return {
-      loaded: this.loadedVideos.size,
-      loading: this.loadingVideos.size,
-      total: document.querySelectorAll(".video-container").length,
-    };
+    const all = document.querySelectorAll('.video-container');
+    return { total: all.length };  // WeakSet has no .size — use data-attr if needed
   }
 }
 
-// Global functions to bind to events
-function preloadVideosOnInteraction() {
-  let hasInteracted = false;
+// ─── Setup ────────────────────────────────────────────────────────────────────
 
-  const preloadFirstVideo = () => {
-    if (!hasInteracted && window.lazyVideoLoader) {
-      hasInteracted = true;
-      const firstVideoContainer =
-        document.querySelector(".video-container");
-      if (firstVideoContainer) {
-        setTimeout(() => {
-          const parentId = firstVideoContainer.parentElement.id;
-          if (parentId) {
-            window.lazyVideoLoader.preloadVideo(parentId);
-          }
-        }, 1000);
+function setupIntersectionObserver(loader) {
+  if (!('IntersectionObserver' in window)) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(({ target: c, isIntersecting, intersectionRatio }) => {
+      if (!isIntersecting) return;
+      c.classList.add('animate-fade-in');
+      if (intersectionRatio > 0.5 && c.matches(':hover, :focus-within')) {
+        const id = c.parentElement.id;
+        if (id) loader.preload(id);
       }
-    }
+    });
+  }, { rootMargin: '50px', threshold: [0.1, 0.5] });
+  document.querySelectorAll('.video-container').forEach(c => obs.observe(c));
+}
+
+function setupIdlePreload(loader) {
+  // requestIdleCallback replaces the manual 3 s gap + setTimeout chain
+  const ids = [...document.querySelectorAll('.video-container')]
+    .map(c => c.parentElement.id).filter(Boolean);
+
+  let i = 0;
+  const tick = deadline => {
+    while (i < ids.length && deadline.timeRemaining() > 5) loader.preload(ids[i++]);
+    if (i < ids.length) requestIdleCallback(tick);
   };
 
-  // Preload on first user interaction
-  ["click", "scroll", "keydown", "touchstart"].forEach((event) => {
-    document.addEventListener(event, preloadFirstVideo, {
-      once: true,
-      passive: true,
-    });
-  });
-}
-
-function setupVideoIntersectionObserver() {
-  if (!("IntersectionObserver" in window)) {
-    return;
-  }
-
-  const videoObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const container = entry.target;
-
-        if (entry.isIntersecting) {
-          // Add a subtle animation when video comes into view
-          container.classList.add("animate-fade-in");
-
-          // Optional: Preload video when it's 50% visible
-          if (entry.intersectionRatio > 0.5) {
-            const containerId = container.parentElement.id;
-            if (window.lazyVideoLoader && containerId) {
-              setTimeout(() => {
-                // Only preload if user has shown interest by hovering or focusing
-                if (container.matches(":hover, :focus-within")) {
-                  window.lazyVideoLoader.preloadVideo(containerId);
-                }
-              }, 500);
-            }
-          }
-        }
-      });
-    },
-    {
-      rootMargin: "50px",
-      threshold: [0.1, 0.5],
-    }
-  );
-
-  // Observe all video containers
-  document.querySelectorAll(".video-container").forEach((container) => {
-    videoObserver.observe(container);
-  });
-}
-
-function enhanceVideoKeyboardNavigation() {
-  document.querySelectorAll(".video-container").forEach((container) => {
-    container.addEventListener("keydown", (e) => {
-      const video = container.querySelector("video");
-
-      if (video && window.lazyVideoLoader && window.lazyVideoLoader.loadedVideos.has(container)) {
-        switch (e.key) {
-          case "k":
-          case " ":
-            e.preventDefault();
-            video.paused ? video.play() : video.pause();
-            break;
-          case "ArrowLeft":
-            e.preventDefault();
-            video.currentTime = Math.max(0, video.currentTime - 10);
-            break;
-          case "ArrowRight":
-            e.preventDefault();
-            video.currentTime = Math.min(
-              video.duration,
-              video.currentTime + 10
-            );
-            break;
-          case "ArrowUp":
-            e.preventDefault();
-            video.volume = Math.min(1, video.volume + 0.1);
-            break;
-          case "ArrowDown":
-            e.preventDefault();
-            video.volume = Math.max(0, video.volume - 0.1);
-            break;
-          case "m":
-            e.preventDefault();
-            video.muted = !video.muted;
-            break;
-          case "f":
-            e.preventDefault();
-            if (video.requestFullscreen) {
-              video.requestFullscreen();
-            }
-            break;
-        }
-      }
-    });
-  });
-}
-
-function setupVideoAnalytics() {
-  document.addEventListener("click", (e) => {
-    const videoContainer = e.target.closest(".video-container");
-    if (videoContainer) {
-      const videoTitle =
-        videoContainer.parentElement.querySelector("h3 span:last-child")
-          ?.textContent || "Unknown";
-
-      // Log video interaction
-      console.log(`📹 Video interaction: ${videoTitle}`);
-
-      // Integrate with Google Analytics if available
-      if (typeof gtag !== "undefined") {
-        gtag("event", "video_play", {
-          event_category: "Video",
-          event_label: videoTitle,
-          custom_map: { dimension1: "portfolio_video" },
-        });
-      }
-    }
-  });
-}
-
-function optimizeVideoForConnection() {
-  if ("connection" in navigator) {
-    const connection = navigator.connection;
-
-    // Adjust video quality based on connection
-    if (
-      connection.effectiveType === "slow-2g" ||
-      connection.effectiveType === "2g"
-    ) {
-      console.log(
-        "📶 Slow connection detected - Video loading optimized"
-      );
-    }
-
-    // Monitor connection changes
-    connection.addEventListener("change", () => {
-      console.log(
-        `📶 Connection changed to: ${connection.effectiveType}`
-      );
-    });
-  }
-}
-
-function enhanceVideoFullscreen() {
-  document.addEventListener("fullscreenchange", () => {
-    const fullscreenElement = document.fullscreenElement;
-    if (fullscreenElement && fullscreenElement.tagName === "VIDEO") {
-      fullscreenElement.classList.add("video-fullscreen");
-    } else {
-      document.querySelectorAll("video").forEach((video) => {
-        video.classList.remove("video-fullscreen");
-      });
-    }
-  });
-}
-
-function setupVideoErrorRecovery() {
-  document.addEventListener(
-    "error",
-    (e) => {
-      if (e.target.tagName === "VIDEO") {
-        const video = e.target;
-        const container = video.closest(".video-container");
-
-        if (container) {
-          const overlay = container.querySelector(".play-overlay");
-
-          // Try to reload video once
-          if (!video.dataset.retryAttempted) {
-            video.dataset.retryAttempted = "true";
-
-            setTimeout(() => {
-              video.load();
-            }, 2000);
-
-            if (overlay) {
-              overlay.innerHTML = `
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <i class="fas fa-redo text-yellow-600 text-xl sm:text-2xl"></i>
-                </div>
-                <p class="text-white text-sm mt-3 font-medium">Retrying...</p>
-              `;
-            }
-          } else {
-            if (overlay && window.lazyVideoLoader) {
-              window.lazyVideoLoader.showErrorState(overlay);
-            }
-          }
-        }
-      }
-    },
-    true
+  let started = false;
+  ['scroll', 'click', 'touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => {
+      if (!started) { started = true; requestIdleCallback(tick, { timeout: 5000 }); }
+    }, { once: true, passive: true })
   );
 }
 
-function setupIntelligentPreloading() {
-  let preloadQueue = [];
-  let isPreloading = false;
-
-  const containers = document.querySelectorAll(".video-container");
-  containers.forEach((container) => {
-    const containerId = container.parentElement.id;
-    if (containerId) {
-      preloadQueue.push(containerId);
-    }
-  });
-
-  async function preloadNext() {
-    if (isPreloading || preloadQueue.length === 0) return;
-
-    isPreloading = true;
-    const nextId = preloadQueue.shift();
-
-    if (window.lazyVideoLoader && nextId) {
-      try {
-        window.lazyVideoLoader.preloadVideo(nextId);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      } catch (error) {
-        console.error("Preload error:", error);
-      }
-    }
-
-    isPreloading = false;
-
-    if (preloadQueue.length > 0) {
-      setTimeout(preloadNext, 1000);
-    }
-  }
-
-  let hasStartedPreloading = false;
-  ["scroll", "click", "touchstart"].forEach((event) => {
-    document.addEventListener(
-      event,
-      () => {
-        if (!hasStartedPreloading) {
-          hasStartedPreloading = true;
-          setTimeout(preloadNext, 5000);
-        }
-      },
-      { once: true, passive: true }
-    );
+function setupAnalytics() {
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.video-container');
+    if (!c) return;
+    const title = c.closest('[id]')?.querySelector('h3 span:last-child')?.textContent ?? 'Unknown';
+    console.log(`📹 Video interaction: ${title}`);
+    if (typeof gtag !== 'undefined')
+      gtag('event', 'video_play', { event_category: 'Video', event_label: title });
   });
 }
 
-// Self-initialize lazy video loader and bind enhancements
-function initAllVideoEnhancements() {
-  window.lazyVideoLoader = new LazyVideoLoader();
-  preloadVideosOnInteraction();
-  setupVideoIntersectionObserver();
-  enhanceVideoKeyboardNavigation();
-  setupVideoAnalytics();
-  optimizeVideoForConnection();
-  enhanceVideoFullscreen();
-  setupVideoErrorRecovery();
-  setupIntelligentPreloading();
+function init() {
+  const loader = window.lazyVideoLoader = new LazyVideoLoader();
+  setupIntersectionObserver(loader);
+  setupIdlePreload(loader);
+  setupAnalytics();
 
-  // Export for external use
+  /* setupVideoErrorRecovery removed — the 'error' event handler inside _load()
+     already retries via video.load() and updates the overlay. A document-level
+     capture listener that also calls video.load() caused double-retry loops. */
+
   window.VideoManager = {
-    getStats: () =>
-      window.lazyVideoLoader?.getStats() || { loaded: 0, loading: 0, total: 0 },
-    preloadVideo: (containerId) =>
-      window.lazyVideoLoader?.preloadVideo(containerId),
-    preloadAll: () => {
-      document.querySelectorAll(".video-container").forEach((container) => {
-        const containerId = container.parentElement.id;
-        if (containerId) {
-          window.lazyVideoLoader?.preloadVideo(containerId);
-        }
-      });
-    },
+    preload: id => loader.preload(id),
+    preloadAll: () => document.querySelectorAll('.video-container')
+      .forEach(c => c.parentElement.id && loader.preload(c.parentElement.id)),
+    getStats: () => loader.getStats(),
   };
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(initAllVideoEnhancements, 500);
-  });
-} else {
-  setTimeout(initAllVideoEnhancements, 500);
-}
+document.readyState === 'loading'
+  ? document.addEventListener('DOMContentLoaded', init, { once: true })
+  : init();
