@@ -1,4 +1,4 @@
-// lazy-video.js — optimised rewrite
+// lazyVideo.js — click-to-load only, no background preloading
 
 const setOverlay = (overlay, type) => {
   const map = {
@@ -15,9 +15,8 @@ const setOverlay = (overlay, type) => {
 
 export class LazyVideoLoader {
   constructor() {
-    // WeakSets: containers are GC'd if removed from DOM
-    this.loaded = new WeakSet();
-    this.loading = new WeakSet();
+    this.loaded = new WeakSet(); // containers whose <video> is in the DOM
+    this.loading = new WeakSet(); // containers currently fetching
     this.aborts = new WeakMap(); // container → AbortController
     this._init();
   }
@@ -28,14 +27,13 @@ export class LazyVideoLoader {
       c.setAttribute('role', 'button');
       c.setAttribute('aria-label', 'Click to load and play video');
 
-      // Single listener handles both click and keyboard — no duplication
       c.addEventListener('click', e => this._handleClick(e, c));
       c.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           this._handleClick(e, c);
         }
-        this._handleVideoKeys(e, c);  // merged here, not in a 2nd querySelectorAll loop
+        this._handleVideoKeys(e, c);
       });
     });
   }
@@ -76,7 +74,6 @@ export class LazyVideoLoader {
     const overlay = c.querySelector('.play-overlay');
     if (!src || !placeholder) { console.error('Missing video source or placeholder'); return; }
 
-    // Cancel any in-flight load for this container before starting a new one
     this.aborts.get(c)?.abort();
     const ac = new AbortController();
     this.aborts.set(c, ac);
@@ -85,22 +82,26 @@ export class LazyVideoLoader {
     setOverlay(overlay, 'loading');
 
     const video = Object.assign(document.createElement('video'), {
-      controls: true, preload: 'metadata', playsInline: true,
+      controls: true,
+      preload: 'none',        // ← 'none' not 'metadata' — fetch nothing until play
+      playsInline: true,
       className: 'absolute top-0 left-0 w-full h-full object-contain',
     });
     video.setAttribute('controlsList', 'nodownload');
     video.setAttribute('disablePictureInPicture', '');
-    video.innerHTML = `<source src="${src}" type="video/mp4">
-      Your browser does not support the video tag.`;
+    video.innerHTML = `<source src="${src}" type="video/mp4">Your browser does not support the video tag.`;
 
     const on = (evt, fn) => video.addEventListener(evt, fn, { signal: ac.signal });
 
     on('loadedmetadata', () => {
       if (ac.signal.aborted) return;
       setOverlay(overlay, 'hide');
+      // Hide the poster so it doesn't show through
+      const poster = c.querySelector('.video-poster');
+      if (poster) poster.style.display = 'none';
       placeholder.appendChild(video);
       this.loaded.add(c);
-      this.loading.delete(c);  // WeakSet.delete is a no-op if absent — safe
+      this.loading.delete(c);
       c.setAttribute('aria-label', 'Video loaded. Click to play/pause');
       video.play().catch(() => setOverlay(overlay, 'play'));
     });
@@ -112,7 +113,7 @@ export class LazyVideoLoader {
     video.load();
   }
 
-  // Public API
+  // Public API — for manual control from console or other modules
   preload(id) {
     const root = document.getElementById(id);
     const c = root?.classList.contains('video-container')
@@ -121,45 +122,21 @@ export class LazyVideoLoader {
   }
 
   getStats() {
-    const all = document.querySelectorAll('.video-container');
-    return { total: all.length };  // WeakSet has no .size — use data-attr if needed
+    return { total: document.querySelectorAll('.video-container').length };
   }
 }
 
-// ─── Setup ────────────────────────────────────────────────────────────────────
+// ─── Scroll-in animation only — no preloading ────────────────────────────────
 
-function setupIntersectionObserver(loader) {
+function setupIntersectionObserver() {
   if (!('IntersectionObserver' in window)) return;
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(({ target: c, isIntersecting, intersectionRatio }) => {
+    entries.forEach(({ target: c, isIntersecting }) => {
       if (!isIntersecting) return;
-      c.classList.add('animate-fade-in');
-      if (intersectionRatio > 0.5 && c.matches(':hover, :focus-within')) {
-        const id = c.parentElement.id;
-        if (id) loader.preload(id);
-      }
+      c.classList.add('animate-fade-in'); // CSS fade-in only, no video fetch
     });
-  }, { rootMargin: '50px', threshold: [0.1, 0.5] });
+  }, { rootMargin: '50px', threshold: 0.1 });
   document.querySelectorAll('.video-container').forEach(c => obs.observe(c));
-}
-
-function setupIdlePreload(loader) {
-  // requestIdleCallback replaces the manual 3 s gap + setTimeout chain
-  const ids = [...document.querySelectorAll('.video-container')]
-    .map(c => c.parentElement.id).filter(Boolean);
-
-  let i = 0;
-  const tick = deadline => {
-    while (i < ids.length && deadline.timeRemaining() > 5) loader.preload(ids[i++]);
-    if (i < ids.length) requestIdleCallback(tick);
-  };
-
-  let started = false;
-  ['scroll', 'click', 'touchstart'].forEach(ev =>
-    document.addEventListener(ev, () => {
-      if (!started) { started = true; requestIdleCallback(tick, { timeout: 5000 }); }
-    }, { once: true, passive: true })
-  );
 }
 
 function setupAnalytics() {
@@ -175,18 +152,13 @@ function setupAnalytics() {
 
 function init() {
   const loader = window.lazyVideoLoader = new LazyVideoLoader();
-  setupIntersectionObserver(loader);
-  setupIdlePreload(loader);
+  setupIntersectionObserver(); // animation only, no loader passed
   setupAnalytics();
-
-  /* setupVideoErrorRecovery removed — the 'error' event handler inside _load()
-     already retries via video.load() and updates the overlay. A document-level
-     capture listener that also calls video.load() caused double-retry loops. */
 
   window.VideoManager = {
     preload: id => loader.preload(id),
     preloadAll: () => document.querySelectorAll('.video-container')
-      .forEach(c => c.parentElement.id && loader.preload(c.parentElement.id)),
+      .forEach(c => c.parentElement?.id && loader.preload(c.parentElement.id)),
     getStats: () => loader.getStats(),
   };
 }

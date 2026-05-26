@@ -121,7 +121,7 @@ Promise.all(renderPromises).then((sections) => {
   };
   Object.entries(CONFIG.features).forEach(([f, enabled]) => {
     if (enabled && featureModules[f]) {
-      import(`./managers/${featureModules[f]}?v=1.5`).catch(err =>
+      import(`./managers/${featureModules[f]}?v=1.6`).catch(err =>
         console.error(`Failed to load manager for "${f}":`, err)
       );
     }
